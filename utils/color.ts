@@ -1,0 +1,1 @@
+export const ColorOptions: string[] = ["#B4D4FF", "#A5D6A7", "#FFCC80", "#E57373", "#BA85FF", "#62A4FF", "#81C784", "#FFA726", "#F44336", "#9747FF"]
