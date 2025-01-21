@@ -40,6 +40,7 @@ const ListItemTextCustom = ({
         <ListItemText
           sx={{
             color: router.pathname === path ? 'white' : '#2B5692',
+           
           }}
           primary={<Typography fontWeight="bold">{label}</Typography>}
         />
@@ -82,9 +83,10 @@ export default function Sidebar({
     state: { user },
   }: any = useAuth()
   const [open, setOpen] = React.useState(true)
-  const [isOpenRequest, setIsOpenRequest] = React.useState(true)
-  const [isOpenOnGoing, setIsOpenOnGoing] = React.useState(true)
-  const [isOpenClosed, setIsOpenClosed] = React.useState(true)
+  const [isOpenKelas, setisOpenKelas] = React.useState(true)
+  const [isOpenFakultas, setisOpenFakultas] = React.useState(true)
+  const [isOpenProdi, setisOpenProdi] = React.useState(true)
+  const [isOpenUser, setisOpenUser] = React.useState(true)
   const isTabletView = useMediaQuery('(max-width: 1180px)')
 
   const handleCollapse = () => {
@@ -116,7 +118,7 @@ export default function Sidebar({
       justifyContent: 'space-between',
       backgroundColor: router.pathname === path ? '#2B5692' : '',
       '&:hover': {
-        backgroundColor: '#EAEEF4',
+        backgroundColor: router.pathname === path ? '#5678a8' : '#d5dde9',
       },
     }
   }
@@ -136,31 +138,18 @@ export default function Sidebar({
             position: 'fixed',
             height: '100vh',
             top: '0',
+            pt: 2
           }}
         >
           <Stack
             direction="row"
-            justifyContent={isCollapse ? 'center' : 'space-between'}
+            justifyContent="center"
             alignItems="center"
             sx={{ padding: '8px' }}
           >
-            {!isCollapse && (
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={1}
-                sx={{ pl: 2, cursor: 'pointer' }}
-                onClick={() => router.push('/')}
-              >
-                <UilChatBubbleUser />
-                <Typography variant="h6" textAlign="left">
-                  Chat Consultation
-                </Typography>
-              </Stack>
-            )}
-            {/* <IconButton onClick={handleCollapse}>
-              <UilChatBubbleUser />
-            </IconButton> */}
+            <Typography variant="h6" textAlign="center">
+                  SKURING
+            </Typography>
           </Stack>
           <List
             sx={{
@@ -172,122 +161,183 @@ export default function Sidebar({
             aria-labelledby="nested-list-subheader"
           >
             <ListItemButton
-              sx={handleItemButtonStyle('/first-time')}
-              onClick={() => router.push('/first-time')}
+              sx={handleItemButtonStyle('/')}
+              onClick={() => router.push('/')}
             >
               <ListItemTextCustom
                 isCollapse={isCollapse}
-                path="/first-time"
-                label="First Time"
+                path="/"
+                label="Dashboard"
               />
-              <ListItemIcon sx={iconWrapperStyle}>
-                <UilPlus style={handleIconStyle('/first-time')} />
-              </ListItemIcon>
             </ListItemButton>
             <ListItemButton
-              sx={handleItemButtonStyle('/request-chat')}
-              onClick={() => setIsOpenRequest(!isOpenRequest)}
+              sx={handleItemButtonStyle('/kelas')}
+              onClick={() => setisOpenKelas(!isOpenKelas)}
             >
               <ListItemTextCustom
                 isCollapse={isCollapse}
-                path="/request-chat"
-                label="Request Chat"
+                path="/kelas"
+                label="Kelas"
               />
               <ListItemIcon sx={iconWrapperStyle}>
                 {
-                  isOpenRequest ? (
-                    <UilAngleDown style={handleIconStyle('/request-chat')} />
+                  isOpenKelas ? (
+                    <UilAngleDown style={handleIconStyle('/kelas')} />
                   ) : (
-                    <UilAngleUp style={handleIconStyle('/request-chat')} />
+                    <UilAngleUp style={handleIconStyle('/kelas')} />
                   ) // UisAngleDown
                 }
               </ListItemIcon>
             </ListItemButton>
-            <Collapse in={isOpenRequest} timeout="auto" unmountOnExit>
+            <Collapse in={isOpenKelas} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItemButton
-                  onClick={() => router.push('/chat/1')}
+                  onClick={() => router.push('/kelas/tambah')}
                   sx={{ pl: 4 }}
                 >
-                  <ListItemIcon sx={{ minWidth: '36px' }}>
-                    <Avatar name="tanjiro" />
-                  </ListItemIcon>
                   <ListItemText
                     primary={
-                      <Typography fontWeight={500}>Tanjiro Kamado</Typography>
+                      <Typography fontWeight={500}>Tambah Kelas</Typography>
+                    }
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  onClick={() => router.push('/kelas')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography fontWeight={500}>Lihat Kelas</Typography>
                     }
                   />
                 </ListItemButton>
               </List>
             </Collapse>
-            <Divider />
             <ListItemButton
-              sx={handleItemButtonStyle('/ongoing-chat')}
-              onClick={() => setIsOpenOnGoing(!isOpenOnGoing)}
+              sx={handleItemButtonStyle('/fakultas')}
+              onClick={() => setisOpenFakultas(!isOpenFakultas)}
             >
               <ListItemTextCustom
                 isCollapse={isCollapse}
-                path="/ongoing-chat"
-                label="Ongoing"
+                path="/fakultas"
+                label="Fakultas"
               />
               <ListItemIcon sx={iconWrapperStyle}>
                 {
-                  isOpenOnGoing ? (
-                    <UilAngleDown style={handleIconStyle('/ongoing-chat')} />
+                  isOpenFakultas ? (
+                    <UilAngleDown style={handleIconStyle('/fakultas')} />
                   ) : (
-                    <UilAngleUp style={handleIconStyle('/ongoing-chat')} />
+                    <UilAngleUp style={handleIconStyle('/fakultas')} />
                   ) // UisAngleDown
                 }
               </ListItemIcon>
             </ListItemButton>
-            <Collapse in={isOpenOnGoing} timeout="auto" unmountOnExit>
+            <Collapse in={isOpenFakultas} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 <ListItemButton
-                  onClick={() => router.push('/chat/1')}
+                  onClick={() => router.push('/fakultas/tambah')}
                   sx={{ pl: 4 }}
                 >
-                  <ListItemIcon sx={{ minWidth: '36px' }}>
-                    <Avatar name="Ajior" />
-                  </ListItemIcon>
                   <ListItemText
                     primary={
-                      <Typography fontWeight={500}>Ajior Going</Typography>
+                      <Typography fontWeight={500}>Tambah Fakultas</Typography>
+                    }
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  onClick={() => router.push('/fakultas')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography fontWeight={500}>Lihat Fakultas</Typography>
                     }
                   />
                 </ListItemButton>
               </List>
             </Collapse>
-            <Divider />
             <ListItemButton
-              sx={handleItemButtonStyle('/closed-chat')}
-              onClick={() => setIsOpenClosed(!isOpenClosed)}
+              sx={handleItemButtonStyle('/prodi')}
+              onClick={() => setisOpenProdi(!isOpenProdi)}
             >
               <ListItemTextCustom
                 isCollapse={isCollapse}
-                path="/closed-chat"
-                label="Closed"
+                path="/prodi"
+                label="prodi"
               />
               <ListItemIcon sx={iconWrapperStyle}>
                 {
-                  isOpenClosed ? (
-                    <UilAngleDown style={handleIconStyle('/closed-chat')} />
+                  isOpenProdi ? (
+                    <UilAngleDown style={handleIconStyle('/prodi')} />
                   ) : (
-                    <UilAngleUp style={handleIconStyle('/closed-chat')} />
+                    <UilAngleUp style={handleIconStyle('/prodi')} />
                   ) // UisAngleDown
                 }
               </ListItemIcon>
             </ListItemButton>
-            <Collapse in={isOpenClosed} timeout="auto" unmountOnExit>
-              <List component="div" disablePadding>
+            <Collapse in={isOpenProdi} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
                 <ListItemButton
-                  onClick={() => router.push('/chat/1')}
+                  onClick={() => router.push('/prodi/tambah')}
                   sx={{ pl: 4 }}
                 >
-                  <ListItemIcon sx={{ minWidth: '36px' }}>
-                    <Avatar name="Naruto" />
-                  </ListItemIcon>
                   <ListItemText
-                    primary={<Typography fontWeight={500}>Naruto</Typography>}
+                    primary={
+                      <Typography fontWeight={500}>Tambah Prodi</Typography>
+                    }
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  onClick={() => router.push('/prodi')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography fontWeight={500}>Lihat Prodi</Typography>
+                    }
+                  />
+                </ListItemButton>
+              </List>
+            </Collapse>
+            <ListItemButton
+              sx={handleItemButtonStyle('/user')}
+              onClick={() => setisOpenUser(!isOpenUser)}
+            >
+              <ListItemTextCustom
+                isCollapse={isCollapse}
+                path="/user"
+                label="User"
+              />
+              <ListItemIcon sx={iconWrapperStyle}>
+                {
+                  isOpenUser ? (
+                    <UilAngleDown style={handleIconStyle('/prodi')} />
+                  ) : (
+                    <UilAngleUp style={handleIconStyle('/prodi')} />
+                  ) // UisAngleDown
+                }
+              </ListItemIcon>
+            </ListItemButton>
+            <Collapse in={isOpenUser} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+                <ListItemButton
+                  onClick={() => router.push('/user/tambah')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography fontWeight={500}>Tambah User</Typography>
+                    }
+                  />
+                </ListItemButton>
+                <ListItemButton
+                  onClick={() => router.push('/user')}
+                  sx={{ pl: 4 }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography fontWeight={500}>Lihat User</Typography>
+                    }
                   />
                 </ListItemButton>
               </List>

@@ -1,6 +1,5 @@
 import { RotateDevice } from '@components/molecules'
 import { Navbar, Sidebar } from '@components/organism'
-import { TitleType, header } from '@components/organism/navbar'
 import { Dashboard } from '@models/Dashboard'
 import { Box, useMediaQuery } from '@mui/material'
 import { useAuth } from '@store/auth'
@@ -13,7 +12,7 @@ import React, { useEffect } from 'react'
 
 type MainLayoutProps = {
   children: React.ReactNode
-  title?: TitleType
+  title?: string
   isWithSidebar?: boolean
 }
 
@@ -51,7 +50,7 @@ export default function MainLayout({
             ? !patient?.patient_kanji
               ? t('loading')
               : `${patient?.patient_kanji} (${patient?.patient_furigana})`
-            : t(header[title]) ?? 'Navbar'}
+            : title ?? 'Navbar'}
         </title>
         {/* favicon */}
         <link
@@ -107,8 +106,8 @@ export default function MainLayout({
           <Box
             id="main-content"
             sx={{
-              // padding: isTabletView ? '10px' : '2rem',
-              paddingTop: 0,
+              padding: isTabletView ? '10px' : '2rem',
+              // paddingTop: 0,
               ml: isTabletView ? 'auto' : !isCollapse ? '245px' : '110px',
             }}
           >

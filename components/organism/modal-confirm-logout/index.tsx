@@ -29,29 +29,29 @@ export default function ModalConfirmLogout({
   return (
     <Dialog fullWidth maxWidth={'xs'} open={open} onClose={handleClose}>
       <DialogTitle>
-        <Title title={t('logout_confirmation')} withAccent />
+        <Title title="Konfirmasi Logout" withAccent />
       </DialogTitle>
       <DialogContent>
         <Typography variant="body1">
-          {t('logout_confirmation_description')}
+          Apakah anda yakin ingin logout dari akun anda
         </Typography>
       </DialogContent>
       <DialogActions sx={{ pb: 2, pr: 3 }}>
         <MaButton variant="secondary" onClick={handleClose}>
-          {t('cancel')}
+          cancel
         </MaButton>
         <MaButton
           onClick={() => {
             localStorage.removeItem('ma-user-chat')
-            document.cookie =
-              'access_toke_chat=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            // document.cookie =
+            //   'access_toke_chat=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             handleLogout()
-            const redirect = window.location.pathname
-            const url = '/login?redirect=' + redirect
-            router.replace(url)
+            // const redirect = window.location.pathname
+            // const url = '/login?redirect=' + redirect
+            // router.replace(url)
           }}
         >
-          {t('logout')}
+         logout
         </MaButton>
       </DialogActions>
     </Dialog>

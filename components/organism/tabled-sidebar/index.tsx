@@ -71,7 +71,7 @@ export default function TabledSidebar({ onChange }: Props) {
           sx={{ padding: '8px' }}
         >
           <Box sx={{ mx: 'auto' }}>
-            <Typography variant="h6">Chat Consultation</Typography>
+            <Typography variant="h6">SKURING</Typography>
           </Box>
           <IconButton onClick={onChange}>
             <MenuIcon style={{ color: '#2B5692' }} />

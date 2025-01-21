@@ -141,7 +141,7 @@ export default function DashboardPage() {
           />
           <Box
             sx={{
-              paddingTop: '4rem',
+              // paddingTop: '4rem',
               mb: 10,
               pr: 0,
             }}
@@ -172,11 +172,11 @@ export default function DashboardPage() {
                       “Enroll Now” below to register
                     </Typography>
                   </Box>
-                  <Box>
+                  {/* <Box>
                     <Typography variant="subtitle1" fontWeight="bold">
                       Consultation Dashboard
                     </Typography>
-                  </Box>
+                  </Box> */}
                 </Stack>
               </Box>
             </Box>

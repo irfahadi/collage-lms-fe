@@ -28,74 +28,17 @@ const ButtonSwitchLanguage = dynamic(
   () => import('@components/molecules/button-switch-languange'),
   { ssr: false }
 )
-// import ButtonSwitchLanguage from "@components/molecules/button-switch-languange";
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
-export type TitleType =
-  | 'Dashboard'
-  | 'Edit Information patient'
-  | 'Add new patient'
-  | 'Patient List'
-  | 'Archive Patients List'
-  | 'Clinic Setting'
-  | 'Doctor Management'
-  | 'Staff Management'
-  | 'Fee Management'
-  | 'Label Management'
-  | 'Request Form Template Management'
-  | 'Merchandise Management'
-  | 'Maintenance Management'
-  | 'Treatment Management'
-  | 'Patient Detail'
-  | 'Add Caseroom'
-  | 'Consent Form'
-  | 'Deposit Tracking'
-  | 'Diagnose Problem Template'
-  | 'Method of Treatment Template'
-  | 'Important Point Template'
-  | 'Treatment Plan Template'
-  | 'Rubber Management'
-  | 'Journal Report'
-  | 'Chat'
 
 type NavbarProps = {
-  title: TitleType
+  title: string
   isCollapse?: boolean
   withSiderbar?: boolean
   position?: 'fixed' | 'absolute' | 'sticky' | 'static' | 'relative'
   elevation?: number
 }
 
-export const header = {
-  Dashboard: 'dashboard_title',
-  'Edit Information patient': 'edit_information_patient',
-  'Add new patient': 'add_patient_new_title',
-  'Patient List': 'patient_list_title',
-  'Archive Patients List': 'patient_list_archive_title',
-  'Clinic Setting': 'clinic_setting_title',
-  'Doctor Management': 'doctor_management_title',
-  'Staff Management': 'staff_management_title',
-  'Fee Management': 'fee_management_title',
-  'Label Management': 'label_management_title',
-  'Request Form Template Management': 'request_form_title',
-  'Merchandise Management': 'merchandise_management',
-  'Maintenance Management': 'maintenance_management',
-  'Treatment Management': 'treatment_management',
-  'Patient Detail': 'breadcrumb_patient_detail',
-  'Add Caseroom': 'caseroom_add',
-  'Consent Form': 'concent_form_title',
-  'Deposit Tracking': 'more_info_deposit_tracking_title',
-  'Diagnose Problem Template': 'diagnose_problem_template',
-  'Method of Treatment Template': 'method_of_treatment_template',
-  'Important Point Template': 'important_point_template',
-  'Treatment Plan Template': 'treatment_plan_template',
-  'Rubber Management': 'rubber_management_title',
-  'Journal Report': 'journal_report',
-  Chat: 'Chat',
-}
-
 export default function Navbar({
-  title = 'Dashboard',
+  title = '',
   isCollapse = false,
   withSiderbar = true,
   position,
@@ -108,35 +51,17 @@ export default function Navbar({
   const [openDrawer, setOpeDrawer] = useState<boolean>(false)
   const [openModalLogout, setOpenModalLogout] = React.useState(false)
   const isTabletView = useMediaQuery('(max-width: 1180px)')
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  )
 
-  const header = {
-    Dashboard: 'dashboard_title',
-    'Edit Information patient': 'edit_information_patient',
-    'Add new patient': 'add_patient_new_title',
-    'Patient List': 'patient_list_title',
-    'Archive Patients List': 'patient_list_archive_title',
-    'Clinic Setting': 'clinic_setting_title',
-    'Doctor Management': 'doctor_management_title',
-    'Staff Management': 'staff_management_title',
-    'Fee Management': 'fee_management_title',
-    'Label Management': 'label_management_title',
-    'Request Form Template Management': 'request_form_title',
-    'Merchandise Management': 'merchandise_management',
-    'Maintenance Management': 'maintenance_management',
-    'Treatment Management': 'treatment_management',
-    'Patient Detail': 'breadcrumb_patient_detail',
-    'Add Caseroom': 'caseroom_add',
-    'Consent Form': 'concent_form_title',
-    'Deposit Tracking': 'more_info_deposit_tracking_title',
-    'Diagnose Problem Template': 'diagnose_problem_template',
-    'Method of Treatment Template': 'method_of_treatment_template',
-    'Important Point Template': 'important_point_template',
-    'Treatment Plan Template': 'treatment_plan_template',
-    'Rubber Management': 'rubber_management_title',
-    'Journal Report': 'journal_report',
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget)
   }
 
-  // console.log(title);
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null)
+  }
 
   useEffect(() => {
     const searchQuery = (search as string)?.split('?')[0]
@@ -168,55 +93,65 @@ export default function Navbar({
               alignItems="center"
               sx={{ flexGrow: 1 }}
             >
-              <IconButton
-                onClick={() => {
-                  setOpeDrawer(true)
+              <Typography color="#2B5692" variant="h6" component="div">
+                {title}
+              </Typography>
+              {/* {withSiderbar && (
+              <SearchInput
+                value={searchValue}
+                onChange={(e: any) => setSearchValue(e.target.value)}
+                onSubmit={(e: any) => {
+                  e.preventDefault()
+                  router.replace(`/chat/${id}?search=${searchValue}`)
                 }}
-              >
-                <MenuIcon style={{ color: '#2B5692' }} />
-              </IconButton>
-              {router.pathname !== '/patients/archive' && (
-                <SearchInput
-                  value={searchValue}
-                  onChange={(e: any) => setSearchValue(e.target.value)}
-                  onSubmit={(e: any) => {
-                    e.preventDefault()
-                    let searchQuery = router.asPath.split('?')[1]
-                    let newQuery = router.asPath.split('?')[2]
-                    if (searchQuery?.includes('search')) {
-                      router.replace(
-                        `/patients?search=${searchValue}${
-                          newQuery ? `&${newQuery}` : ''
-                        }`
-                      )
-                    } else if (!newQuery) {
-                      router.replace(
-                        `/patients?search=${searchValue}${
-                          searchQuery ? `&${searchQuery}` : ''
-                        }`
-                      )
-                    } else {
-                      router.replace(`/patients?search=${searchValue}`)
-                    }
-                  }}
-                />
-              )}
+              />
+            )} */}
             </Stack>
+
             <Stack
               direction="row"
               spacing={2}
               alignItems="center"
               justifyContent="flex-end"
             >
-              <MaButton
-                onClick={() => {
-                  //
-                }}
-              >
-                {t('Back to Orva')}
-              </MaButton>
-              <ButtonSwitchLanguage />
-              <Notification />
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      sx={{ width: 24, height: 24 }}
+                      alt="Remy Sharp"
+                      src=""
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem disabled>
+                    <Typography textAlign="center">user</Typography>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setOpenModalLogout(true)
+                    }}
+                  >
+                    <Typography textAlign="center">logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
             </Stack>
           </Toolbar>
         </AppBar>
@@ -261,9 +196,9 @@ export default function Navbar({
             sx={{ flexGrow: 1 }}
           >
             <Typography color="#2B5692" variant="h6" component="div">
-              Consultation
+              {title}
             </Typography>
-            {withSiderbar && (
+            {/* {withSiderbar && (
               <SearchInput
                 value={searchValue}
                 onChange={(e: any) => setSearchValue(e.target.value)}
@@ -272,7 +207,7 @@ export default function Navbar({
                   router.replace(`/chat/${id}?search=${searchValue}`)
                 }}
               />
-            )}
+            )} */}
           </Stack>
 
           <Stack
@@ -281,15 +216,44 @@ export default function Navbar({
             alignItems="center"
             justifyContent="flex-end"
           >
-            <MaButton
-              onClick={() => {
-                //
-              }}
-            >
-              {t('Back to Orva')}
-            </MaButton>
-            <ButtonSwitchLanguage />
-            <Notification />
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    sx={{ width: 24, height: 24 }}
+                    alt="Remy Sharp"
+                    src=""
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem disabled>
+                  <Typography textAlign="center">user</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setOpenModalLogout(true)
+                  }}
+                >
+                  <Typography textAlign="center">logout</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
           </Stack>
         </Toolbar>
       </AppBar>
