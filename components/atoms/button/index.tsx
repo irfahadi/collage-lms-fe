@@ -38,7 +38,7 @@ export default function MaButton({
   startIcon,
   endIcon,
   size = 'medium',
-  isUpperCase = true,
+  isUpperCase = false,
   disabled = false,
   type = 'button',
   onClick,

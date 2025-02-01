@@ -17,18 +17,14 @@ import {
   Box,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { MaButton, TablePaginationActions } from '@components/atoms'
-import { PatientCard, PatientExternalLink } from '@components/molecules'
-import Link from 'next/link'
+import { MaButton } from '@components/atoms'
 import { useRouter } from 'next/router'
-import { PatientType, TreatmentStatuses } from '@models/Patients'
-import { useTranslation } from 'react-i18next'
-import AscendingIcon from '@assets/icons/ascending.svg'
-import DescendingIcon from '@assets/icons/descending.svg'
-import SortIcon from '@assets/icons/sort.svg'
+import ClassCard from '@components/molecules/class-card'
+import { classes } from '@utils/dummy'
+import { formatDateRange } from '@utils/date'
 
 interface ClassTableProps {
-  data: any
+  data: ClassModelWithRelations[]
   page: number
   rowsPerPage: number
   onPageChange: (
@@ -39,16 +35,8 @@ interface ClassTableProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
   totalPage: number
-  onClick: (title: string, value: string) => void
-  patientName: string
-  doctor: string
-  firstConsult: string
-  nextReservation: string
-  setPatientName: React.Dispatch<React.SetStateAction<string>>
-  setDoctor: React.Dispatch<React.SetStateAction<string>>
-  setFirstConsult: React.Dispatch<React.SetStateAction<string>>
+  onClick?: (title: string, value: string) => void
   onRowClick?: (data: any) => void
-  setNextReservation: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function ClassTabel(props: ClassTableProps) {
@@ -60,20 +48,10 @@ export default function ClassTabel(props: ClassTableProps) {
     onRowPageChange,
     totalPage,
     onClick,
-    patientName,
-    setPatientName,
-    doctor,
-    setDoctor,
-    firstConsult,
-    setFirstConsult,
-    nextReservation,
-    setNextReservation,
     onRowClick = () => {},
   } = props
   const router = useRouter()
-  const { t } = useTranslation()
   const isTabletView = useMediaQuery('(max-width: 1180px)')
-
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       background: '#2B5692',
@@ -83,76 +61,39 @@ export default function ClassTabel(props: ClassTableProps) {
     padding: isTabletView ? '16px 5px' : 'auto',
   }))
 
-  const goToPatientDetailPage = (data: any) => {
-    onRowClick(data)
-  }
+  const [userData, setUserData] = React.useState({
+    role: null,
+  })
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Cek apakah kode berjalan di client
+      const storedUserData = localStorage.getItem('userdata')
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData))
+      }
+    }
+  }, [])
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead sx={{ backgroundColor: '#2B5692' }}>
           <TableRow>
-            <StyledTableCell
-              sx={{ width: '300px', minWidth: '300px' }}
-              onClick={() => {
-                switch (patientName) {
-                  case 'asc': {
-                    setPatientName('desc')
-                    onClick('patientName', 'desc')
-                    break
-                  }
-                  case 'desc': {
-                    setPatientName('')
-                    onClick('patientName', '')
-                    break
-                  }
-                  default:
-                    setPatientName('asc')
-                    onClick('patientName', 'asc')
-                    break
-                }
-              }}
-            >
+            <StyledTableCell sx={{ width: '200px', minWidth: '200px' }}>
               <Stack
                 direction="row"
                 sx={{
-                  textAlign: 'left',
-                  alignItems: 'center',
+                  textAlign: 'center',
                   cursor: 'pointer',
+                  justifyContent: 'center',
                 }}
                 gap={1}
               >
-                {t('patient_name_table')}
-                {patientName === 'asc' ? (
-                  <AscendingIcon />
-                ) : patientName === 'desc' ? (
-                  <DescendingIcon />
-                ) : (
-                  <SortIcon />
-                )}
+                Kelas
               </Stack>
             </StyledTableCell>
-            <StyledTableCell
-              sx={{ width: '150px', minWidth: '150px' }}
-              onClick={() => {
-                switch (doctor) {
-                  case 'asc': {
-                    setDoctor('desc')
-                    onClick('doctor', 'desc')
-                    break
-                  }
-                  case 'desc': {
-                    setDoctor('')
-                    onClick('doctor', '')
-                    break
-                  }
-                  default:
-                    setDoctor('asc')
-                    onClick('doctor', 'asc')
-                    break
-                }
-              }}
-            >
+            <StyledTableCell sx={{ width: '200px' }}>
               <Stack
                 direction="row"
                 sx={{
@@ -162,37 +103,10 @@ export default function ClassTabel(props: ClassTableProps) {
                 }}
                 gap={1}
               >
-                {t('doctor_staff_table')}
-                {doctor === 'asc' ? (
-                  <AscendingIcon />
-                ) : doctor === 'desc' ? (
-                  <DescendingIcon />
-                ) : (
-                  <SortIcon />
-                )}
+                Dosen
               </Stack>
             </StyledTableCell>
-            <StyledTableCell
-              sx={{ width: '150px' }}
-              onClick={() => {
-                switch (firstConsult) {
-                  case 'newest': {
-                    setFirstConsult('oldest')
-                    onClick('firstConsult', 'oldest')
-                    break
-                  }
-                  case 'oldest': {
-                    setFirstConsult('')
-                    onClick('firstConsult', '')
-                    break
-                  }
-                  default:
-                    setFirstConsult('newest')
-                    onClick('firstConsult', 'newest')
-                    break
-                }
-              }}
-            >
+            <StyledTableCell sx={{ width: '300px' }}>
               <Stack
                 direction="row"
                 sx={{
@@ -202,37 +116,10 @@ export default function ClassTabel(props: ClassTableProps) {
                 }}
                 gap={1}
               >
-                {t('first_consult_table')}
-                {firstConsult === 'newest' ? (
-                  <AscendingIcon />
-                ) : firstConsult === 'oldest' ? (
-                  <DescendingIcon />
-                ) : (
-                  <SortIcon />
-                )}
+                Jadwal
               </Stack>
             </StyledTableCell>
-            <StyledTableCell
-              sx={{ width: '150px' }}
-              onClick={() => {
-                switch (nextReservation) {
-                  case 'newest': {
-                    setNextReservation('oldest')
-                    onClick('nextReservation', 'oldest')
-                    break
-                  }
-                  case 'oldest': {
-                    setNextReservation('')
-                    onClick('nextReservation', '')
-                    break
-                  }
-                  default:
-                    setNextReservation('newest')
-                    onClick('nextReservation', 'newest')
-                    break
-                }
-              }}
-            >
+            <StyledTableCell sx={{ width: '200px' }}>
               <Stack
                 direction="row"
                 sx={{
@@ -242,169 +129,116 @@ export default function ClassTabel(props: ClassTableProps) {
                 }}
                 gap={1}
               >
-                {t('next_appointment_table')}
-                {nextReservation === 'newest' ? (
-                  <AscendingIcon />
-                ) : nextReservation === 'oldest' ? (
-                  <DescendingIcon />
-                ) : (
-                  <SortIcon />
-                )}
+                Program Studi
               </Stack>
             </StyledTableCell>
-            <StyledTableCell sx={{ minWidth: '150px', width: '150px' }}>
-              {t('external_link')}
-            </StyledTableCell>
-            <StyledTableCell sx={{ width: '160px', minWidth: '160px' }}>
-              {t('clincheck')}
-            </StyledTableCell>
+            <StyledTableCell sx={{ width: '200px' }}>Aksi</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row: any) => {
-            const firstConsultDate = row.first_consult?.date.split('-')
-            const recordDate = row.record?.date_time.split(' ')[0].split('-')
+          {classes.map((row: ClassModelWithRelations) => {
+            const date = formatDateRange(row.start_date, row.end_date)
             return (
-              <TableRow key={row.id}>
+              <TableRow key={row.class_id}>
                 <TableCell
                   sx={{
-                    width: '300px',
+                    width: '200px',
                     py: 1,
                     px: 0.5,
                     boxSizing: 'border-box',
-                    boxShadow: row?.genie_patient_id
-                      ? '7px 0px 1px -4px #f14b4b inset'
-                      : 'none',
                   }}
-                  onClick={() => goToPatientDetailPage(row)}
+                  // onClick={() => goToPatientDetailPage(row)}
                 >
-                  <PatientCard user={row} />
+                  <ClassCard data={row} />
                 </TableCell>
-                <TableCell sx={{ px: 0.5, width: '150px' }}>
+                <TableCell
+                  sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
+                  // onClick={() => goToPatientDetailPage(row)}
+                >
+                  <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
+                    {row.responsible_lecturer.first_name +
+                      ' ' +
+                      row.responsible_lecturer.last_name}
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  // onClick={() => goToPatientDetailPage(row)}
+                  sx={{ textAlign: 'center', px: 0.5, width: '300px' }}
+                >
+                  <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
+                    {date}
+                  </Typography>
+                </TableCell>
+                <TableCell
+                  // onClick={() => goToPatientDetailPage(row)}
+                  sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
+                >
+                  <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
+                    {row.study_program.name}
+                  </Typography>
+                </TableCell>
+                <TableCell sx={{ px: 0.5, width: '200px' }}>
                   <Stack
-                    sx={{ minWidth: '130px' }}
-                    gap={1}
                     direction="column"
                     justifyContent="center"
+                    alignItems="center"
+                    gap={0.5}
                   >
-                    {row.doctor?.doctor_displayname ? (
+                    {userData?.role == 'Dosen' && (
                       <Box>
                         <MaButton
                           size="small"
-                          onClick={() => goToPatientDetailPage(row)}
+                          onClick={() => router.push('kelas/detail')}
                           sx={{
                             textAlign: 'center',
-                            color: `white !important`,
-                            backgroundColor: `${row.doctor?.color} !important`,
                             fontSize: isTabletView ? '12px' : '12px',
                           }}
                         >
-                          {row.doctor?.doctor_displayname}
+                          Detail
                         </MaButton>
                       </Box>
-                    ) : null}
-                    {row.staff?.staff_displayname ? (
-                      <Box>
-                        <MaButton
-                          size="small"
-                          onClick={() => goToPatientDetailPage(row)}
-                          sx={{
-                            textAlign: 'center',
-                            color: `white !important`,
-                            backgroundColor: `${row.staff?.color} !important`,
-                            fontSize: isTabletView ? '12px' : '12px',
-                          }}
-                        >
-                          {row.staff?.staff_displayname}
-                        </MaButton>
-                      </Box>
-                    ) : null}
-                  </Stack>
-                </TableCell>
-                <TableCell
-                  onClick={() => goToPatientDetailPage(row)}
-                  sx={{ textAlign: 'center', px: 0.5, width: '150px' }}
-                >
-                  <Link
-                    href={`/patients/${row.id}`}
-                    style={{
-                      cursor: 'pointer',
-                      textDecoration: 'none',
-                      color: 'black',
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: isTabletView ? '12px' : '16px',
-                        minWidth: '150px',
-                      }}
-                    >
-                      {row.first_consult?.date
-                        ? `${firstConsultDate?.[0]}年 ${firstConsultDate?.[1]}月 ${firstConsultDate?.[2]}日`
-                        : ''}
-                    </Typography>
-                  </Link>
-                </TableCell>
-                <TableCell
-                  onClick={() => goToPatientDetailPage(row)}
-                  sx={{ textAlign: 'center', px: 0.5, width: '150px' }}
-                >
-                  <Link
-                    href={`/patients/${row.id}`}
-                    style={{
-                      cursor: 'pointer',
-                      textDecoration: 'none',
-                      color: 'black',
-                    }}
-                  >
-                    <Stack gap={1} sx={{ minWidth: '180px' }}>
-                      <Typography
-                        sx={{ fontSize: isTabletView ? '12px' : '16px' }}
-                      >
-                        {row.record?.date_time
-                          ? `${recordDate?.[0]}年 ${recordDate?.[1]}月 ${recordDate?.[2]}日`
-                          : ''}
-                      </Typography>
-                      {row?.record?.treatment_statuses?.map(
-                        (status: TreatmentStatuses) => (
-                          <Typography
-                            key={status.id}
-                            sx={{ fontSize: isTabletView ? '12px' : '16px' }}
+                    )}
+                    {userData?.role == 'Admin Prodi' && (
+                      <>
+                        <Box>
+                          <MaButton
+                            size="small"
+                            onClick={() => router.push('kelas/mahasiswa')}
+                            sx={{
+                              textAlign: 'center',
+                              fontSize: isTabletView ? '12px' : '12px',
+                            }}
                           >
-                            {status.treatment_status}
-                          </Typography>
-                        )
-                      )}
-                    </Stack>
-                  </Link>
-                </TableCell>
-                <TableCell sx={{ px: 0.5, width: '150px' }}>
-                  <Stack direction="row" justifyContent="center">
-                    <PatientExternalLink
-                      orientation={isTabletView ? 'vertical' : 'horizontal'}
-                      invisalign={row?.invisalign}
-                      cc={row?.invisalign_cc}
-                      webch={row?.webceph}
-                    />
+                            Mahasiswa
+                          </MaButton>
+                        </Box>
+                        <Box>
+                          <MaButton
+                            size="small"
+                            onClick={() => router.push('kelas/edit')}
+                            sx={{
+                              textAlign: 'center',
+                              fontSize: isTabletView ? '12px' : '12px',
+                            }}
+                          >
+                            Edit
+                          </MaButton>
+                        </Box>
+                        <Box>
+                          <MaButton
+                            size="small"
+                            // onClick={() => goToPatientDetailPage(row)}
+                            sx={{
+                              textAlign: 'center',
+                              fontSize: isTabletView ? '12px' : '12px',
+                            }}
+                          >
+                            Hapus
+                          </MaButton>
+                        </Box>
+                      </>
+                    )}
                   </Stack>
-                </TableCell>
-                <TableCell sx={{ px: 0.5, width: '160px', minWidth: '160px' }}>
-                  {row?.status_cc ? (
-                    <Typography
-                      sx={{
-                        fontSize: '12px !important',
-                        borderRadius: 2,
-                        border: '2px solid #2273E2',
-                        textAlign: 'center',
-                        width: 'fit-content',
-                        minWidth: '150px',
-                        mx: 'auto',
-                        p: 1,
-                      }}
-                    >
-                      {row?.status_cc}
-                    </Typography>
-                  ) : null}
                 </TableCell>
               </TableRow>
             )
@@ -413,13 +247,13 @@ export default function ClassTabel(props: ClassTableProps) {
             <TableRow>
               <TableCell colSpan={7} sx={{ textAlign: 'center' }}>
                 <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                  {t('no_data')}
+                  Tidak ada kelas
                 </Typography>
               </TableCell>
             </TableRow>
           ) : null}
         </TableBody>
-        {data.length > 0 && (
+        {/* {data.length > 0 && (
           <TableFooter>
             <TableRow>
               <TablePagination
@@ -440,7 +274,7 @@ export default function ClassTabel(props: ClassTableProps) {
               />
             </TableRow>
           </TableFooter>
-        )}
+        )} */}
       </Table>
     </TableContainer>
   )

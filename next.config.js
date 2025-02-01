@@ -8,24 +8,22 @@ const nextReactSvgConfig = {
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [
-      'dev.s3.medicalrecord.maorthonet.com',
-      'localhost:3000',
-      'orthonovas3-stag.s3.ap-northeast-1.amazonaws.com',
-      'orthonovas3-prod.s3.ap-northeast-1.amazonaws.com',
-      'orthonovas3-dev.s3.ap-northeast-1.amazonaws.com',
-      'orthonovas3-devv.s3.ap-northeast-1.amazonaws.com',
-    ],
+    domains: ['localhost:3000'],
   },
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/api/:path*',
-  //       destination: `${process.env.BE_URL}/:path*`,
-  //       basePath: false,
-  //     },
-  //   ]
-  // },
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination: `${process.env.BE_URL}/v1/:path*`,
+        basePath: false,
+      },
+      {
+        source: '/api/:path*',
+        destination: `${process.env.BE_URL}/:path*/`,
+        basePath: false,
+      },
+    ]
+  },
   modularizeImports: {
     'lucide-react': {
       transform: 'lucide-react/{{member}}',

@@ -1,9 +1,6 @@
-import { RotateDevice } from '@components/molecules'
 import { Navbar, Sidebar } from '@components/organism'
 import { Dashboard } from '@models/Dashboard'
 import { Box, useMediaQuery } from '@mui/material'
-import { useAuth } from '@store/auth'
-import { usePatient } from '@store/patient'
 import { usePatients } from '@utils/hooks/use-patients'
 import { t } from 'i18next'
 import Head from 'next/head'
@@ -22,14 +19,6 @@ export default function MainLayout({
   isWithSidebar = true,
 }: MainLayoutProps) {
   const router = useRouter()
-  const {
-    state: { user },
-    handleLogin,
-  }: any = useAuth()
-  const {
-    state: { patient },
-    handleSetPatient,
-  }: any = usePatient()
   const [isCollapse, setIsCollapse] = React.useState(false)
   const isTabletView = useMediaQuery('(max-width: 1180px)')
 
@@ -45,13 +34,7 @@ export default function MainLayout({
   return (
     <>
       <Head>
-        <title>
-          {router.pathname.includes('/patients/[id]')
-            ? !patient?.patient_kanji
-              ? t('loading')
-              : `${patient?.patient_kanji} (${patient?.patient_furigana})`
-            : title ?? 'Navbar'}
-        </title>
+        <title>Skuring</title>
         {/* favicon */}
         <link
           href={`${process.env.NEXT_PUBLIC_BASEPATH || ''}/favicon.ico`}
@@ -96,7 +79,9 @@ export default function MainLayout({
           // height: '100vh',
         }}
       >
-        <Sidebar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
+        {isWithSidebar && (
+          <Sidebar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
+        )}
         <Box
           sx={{
             paddingTop: '4rem',
@@ -108,14 +93,18 @@ export default function MainLayout({
             sx={{
               padding: isTabletView ? '10px' : '2rem',
               // paddingTop: 0,
-              ml: isTabletView ? 'auto' : !isCollapse ? '245px' : '110px',
+              ml:
+                isTabletView || !isWithSidebar
+                  ? 'auto'
+                  : !isCollapse
+                  ? '245px'
+                  : '110px',
             }}
           >
             {children}
           </Box>
         </Box>
       </Box>
-      <RotateDevice />
     </>
   )
 }

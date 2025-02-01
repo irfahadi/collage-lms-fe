@@ -31,7 +31,6 @@ export default function MaDropZoneArea({
   isChipsForPreview = true,
   keynya = 1,
 }: MaDropZoneAreaProps) {
-  const { t } = useTranslation()
   const classes = useStyles()
   return (
     <ThemeProvider theme={theme}>
@@ -46,7 +45,6 @@ export default function MaDropZoneArea({
         onChange={onChange}
         showAlerts={false}
         classes={{ root: classes.previewChip }}
-        previewText={t('selected_files')}
       />
     </ThemeProvider>
   )

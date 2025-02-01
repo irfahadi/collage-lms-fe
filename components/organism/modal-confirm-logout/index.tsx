@@ -12,7 +12,7 @@ import Title from '../title'
 import CloseIcon from '@mui/icons-material/Close'
 import { MaButton } from '@components/atoms'
 import { useRouter } from 'next/router'
-import { useAuth } from '@store/auth'
+// import { useAuth } from '@store/auth'
 import { t } from 'i18next'
 
 type ModalConfirmLogoutProps = {
@@ -25,7 +25,7 @@ export default function ModalConfirmLogout({
   handleClose,
 }: ModalConfirmLogoutProps) {
   const router = useRouter()
-  const { handleLogout }: any = useAuth()
+  // const { handleLogout }: any = useAuth()
   return (
     <Dialog fullWidth maxWidth={'xs'} open={open} onClose={handleClose}>
       <DialogTitle>
@@ -40,19 +40,7 @@ export default function ModalConfirmLogout({
         <MaButton variant="secondary" onClick={handleClose}>
           cancel
         </MaButton>
-        <MaButton
-          onClick={() => {
-            localStorage.removeItem('ma-user-chat')
-            // document.cookie =
-            //   'access_toke_chat=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-            handleLogout()
-            // const redirect = window.location.pathname
-            // const url = '/login?redirect=' + redirect
-            // router.replace(url)
-          }}
-        >
-         logout
-        </MaButton>
+        <MaButton onClick={() => {}}>logout</MaButton>
       </DialogActions>
     </Dialog>
   )

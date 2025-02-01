@@ -6,8 +6,9 @@ import { useTranslation } from 'react-i18next'
 
 interface SearchInputProps {
   bordered?: boolean
-  width?: number
+  width?: string
   value?: string
+  placeholder?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
 }
@@ -76,7 +77,7 @@ export default function SearchInput(props: SearchInputProps) {
     return (
       <StyledInputBaseBordered
         style={{ width: props.width }}
-        placeholder={`${t('search')}…`}
+        placeholder={props.placeholder}
         endAdornment={<SearchIcon />}
         value={props?.value}
         onChange={props?.onChange}
@@ -98,7 +99,7 @@ export default function SearchInput(props: SearchInputProps) {
       </SearchIconWrapper>
       <StyledInputBase
         ref={ref}
-        placeholder={`${t('search')}…`}
+        placeholder={props?.placeholder}
         inputProps={{ 'aria-label': 'search' }}
         value={props?.value}
         onChange={props?.onChange}

@@ -1,48 +1,53 @@
 import React, { useEffect } from 'react'
 import {
   Box,
+  Button,
   Card,
   CardActions,
   CardContent,
   Grid,
   Stack,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import { MaButton } from '@components/atoms'
 import { Navbar, Sidebar } from '@components/organism'
 import Head from 'next/head'
-import cookie from 'cookie'
-import { useAuth } from '@store/auth'
 import { checkUser } from '@utils/services/user'
-import MainLayout from '@components/layout/main'
 
 const SectionCard = ({
   title,
   icon,
   description,
-  acctionButton,
+  onClick,
 }: {
   title?: string
   icon?: any
   description?: string
-  acctionButton?: any
+  onClick?: any
 }) => {
   return (
-    <Card>
+    <Card sx={{ cursor: 'pointer', p: 1 }} onClick={onClick}>
       <CardContent>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          {icon}
-          <Typography color="#212121" variant="h6">
-            {title}
-          </Typography>
-        </Stack>
-        <Typography variant="body2" color="#212121" mt={1}>
+        <Box
+          sx={{
+            width: '100%',
+            height: 110,
+            backgroundColor: '#E4E4E4',
+            borderRadius: 2,
+            marginBottom: 2,
+          }}
+        />
+        <Typography color="#212121" variant="h6">
+          {title}
+        </Typography>
+        <Typography variant="body1" color="#212121" mt={1}>
           {description}
         </Typography>
       </CardContent>
-      <CardActions sx={{ pb: 2 }}>{acctionButton}</CardActions>
+      <Button sx={{ display: 'block', mx: 'auto' }}>Detail Kelas</Button>
     </Card>
   )
 }
@@ -85,63 +90,140 @@ export const ConsultationIcon = () => (
   </svg>
 )
 
+//use server side rendering to check access token
+export async function getServerSideProps(context: any) {
+  const { req, res } = context
+  const { access_token_chat } = req.cookies
+  //get query params
+  const { token } = context.query
+  res.setHeader('Cache-Control', 'no-store')
+  //   if (!access_token_chat && !token) {
+  //     //get origin
+  //     const origin =
+  //       req.headers.origin || // Header `Origin` jika tersedia
+  //       `http${req.headers['x-forwarded-proto'] === 'https' ? 's' : ''}://${
+  //         req.headers.host
+  //       }` // Fallback ke `host`
+  //     const url =
+  //       (process.env.NEXT_PUBLIC_BASEPATH || '') +
+  //       process.env.NEXT_PUBLIC_ORVA_URL +
+  //       '/login?redirect=' +
+  //       origin +
+  //       '/?token=xxx'
+  //     return {
+  //       redirect: {
+  //         destination: url,
+  //         permanent: false,
+  //       },
+  //     }
+  //   }
+
+  return {
+    props: {},
+  }
+}
+
 export default function DashboardPage() {
   const { t } = useTranslation()
-  const {
-    state: { user },
-    handleLogin,
-  }: any = useAuth()
   const router = useRouter()
   const { token } = router.query
 
-  const handleCheckUser = async (token: string) => {
-    try {
-      const res = await checkUser(token)
-      if (res?.code === 200) {
-        document.cookie = cookie.serialize('access_token_chat', token, {
-          sameSite: true,
-          path: '/',
-          maxAge: 60 * 60 * 24 * 30, //1 month
-        })
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [statusSubscribe, setStatusSubscribe] = React.useState(false)
+  const isTabletView = useMediaQuery('(max-width: 1180px)')
 
-        handleLogin({
-          ...res?.data,
-          clinic_id:
-            res?.user?.clinic_id ||
-            Number(process.env.NEXT_PUBLIC_CLINIC_ID || ''),
-        })
-        router.replace('/')
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  //   const handleCheckUser = async (token: string) => {
+  //     try {
+  //       setIsLoading(true)
+  //       const res = await checkUser(token)
+  //       if (res?.code === 200) {
+  //         document.cookie = cookie.serialize('access_token_chat', token, {
+  //           sameSite: true,
+  //           path: '/',
+  //           maxAge: 60 * 60 * 24 * 30, //1 month
+  //         })
+  //         const role = await handleCheckRole(res?.data?.doctor?.id)
+  //         console.log(role, res?.data?.doctor?.id)
+  //         handleLogin({
+  //           ...res?.data,
+  //           role: role ? 'doctor consultant' : 'doctor',
+  //           clinic_id:
+  //             res?.data?.clinic_id ||
+  //             Number(process.env.NEXT_PUBLIC_CLINIC_ID || ''),
+  //         })
 
-  useEffect(() => {
-    if (token) {
-      handleCheckUser(token as string)
-    }
-  }, [token])
+  //         if (role) {
+  //           router.replace('/chat')
+  //         } else {
+  //           router.replace('/')
+  //         }
+  //         setIsLoading(false)
+  //       } else {
+  //         throw res
+  //       }
+  //     } catch (err) {
+  //       setIsLoading(false)
+  //       console.log(err)
+  //     }
+  //   }
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('ma-user-chat') || '{}')
-    if (data?.id) {
-      handleLogin(data)
-    }
-  }, [])
+  //   const handleCheckRole = async (id: number) => {
+  //     try {
+  //       const res = await getDoctorConsultant()
+  //       if (res?.code === 200) {
+  //         const list = res?.data?.value
+  //         handleCheckSubscribe()
+  //         return list.includes(id)
+  //       } else {
+  //         throw res
+  //       }
+  //     } catch (err) {
+  //       console.log(err)
+  //       return false
+  //     }
+  //   }
 
-  // return <EmptyChat />
+  //   const handleCheckSubscribe = async () => {
+  //     try {
+  //       const res = await getStatusSubscribe()
+  //       if (res?.code === 200) {
+  //         setStatusSubscribe(res?.data?.is_consultation_membership)
+  //       } else {
+  //         setStatusSubscribe(false)
+  //       }
+  //       setIsLoading(false)
+  //     } catch (err) {
+  //       console.log(err)
+  //     }
+  //   }
+
+  // useEffect(() => {
+  //   handleCheckSubscribe()
+  // }, [])
+
   return (
     <>
+      <Head>
+        <title>{t('dashboard')}</title>
+      </Head>
+      <Stack direction="row">
+        <Box
+          position="relative"
+          sx={{
+            width: !statusSubscribe || isTabletView ? '100%' : '83%',
+            overflowY: 'hidden',
+          }}
+        >
           <Navbar
             withSiderbar={false}
             isCollapse={false}
             position="absolute"
             title="Dashboard"
           />
+          {/* {!isLoading ? ( */}
           <Box
             sx={{
-              // paddingTop: '4rem',
+              paddingTop: '4rem',
               mb: 10,
               pr: 0,
             }}
@@ -164,83 +246,51 @@ export default function DashboardPage() {
                   justifyContent="space-between"
                 >
                   <Box>
-                    <Typography variant="h6">
-                      Hello, {user?.fullname}
-                    </Typography>
+                    <Typography variant="h6">Halo User</Typography>
                     <Typography variant="subtitle1">
-                      You are not registered as consultant member, click button
-                      “Enroll Now” below to register
+                      Selamat datang di Sistem Kuliah Daring - skuring.com
                     </Typography>
                   </Box>
-                  {/* <Box>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      Consultation Dashboard
-                    </Typography>
-                  </Box> */}
                 </Stack>
               </Box>
             </Box>
             <Box mt={4} mx={4}>
-              <Grid container spacing={4}>
-                <Grid item sm={4}>
+              <Grid container spacing={2}>
+                <Grid item xs={6} sm={4} md={3}>
                   <SectionCard
-                    title="Consultation"
+                    title={t('service_1_title')}
                     icon={<ConsultationIcon />}
-                    description="Receive a thorough examination of your teeth and oral health. Our dentists will assess your teeth, gums, nerves, and soft tissues. Early detection of cavities, gum disease, and other oral issues is possible. We will provide personalized treatment recommendations based on your unique needs."
-                    acctionButton={
-                      <MaButton
-                        sx={{
-                          mx: 'auto',
-                        }}
-                        onClick={() => router.push('/patients')}
-                      >
-                        select patient to consult
-                      </MaButton>
-                    }
+                    description={t('service_1_desc')}
+                    onClick={() => router.push('detail')}
                   />
                 </Grid>
-                <Grid item sm={4}>
+                <Grid item xs={6} sm={4} md={3}>
                   <SectionCard
-                    title="歯のホワイトニング"
+                    title={t('service_2_title')}
                     icon={<ConsultationIcon />}
-                    description="プロフェッショナルな歯のホワイトニング治療で、より明るい笑顔を手に入れましょう。当院では、歯の表面の汚れを落とす安全かつ効果的なホワイトニング技術を使用します。あなたの具体的なニーズと目標に合わせて、最適なホワイトニング方法をご提案します。"
-                    acctionButton={
-                      <MaButton
-                        sx={{
-                          mx: 'auto',
-                        }}
-                        onClick={() => router.push('/chat')}
-                      >
-                        View consultation chat
-                      </MaButton>
-                    }
+                    description={t('service_2_desc')}
                   />
                 </Grid>
-                <Grid item sm={4}>
+                <Grid item xs={6} sm={4} md={3}>
                   <SectionCard
-                    title="インプラント"
+                    title={t('service_3_title')}
                     icon={<ConsultationIcon />}
-                    description="失われた歯をインプラントで補う最善の解決策を見つけましょう。当院の歯科医は、あなたがインプラント治療に適しているかどうかを判断するために、総合的な評価を行います。インプラントの手術手順、利用可能なインプラントの種類、および概算費用について詳細な説明を受けられます。"
-                    acctionButton={
-                      <MaButton
-                        variant="error"
-                        sx={{
-                          mx: 'auto',
-                        }}
-                        onClick={() => {}}
-                      >
-                        Cancel subscribe
-                      </MaButton>
-                    }
+                    description={t('service_3_desc')}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={4} md={3}>
+                  <SectionCard
+                    title={t('service_3_title')}
+                    icon={<ConsultationIcon />}
+                    description={t('service_3_desc')}
                   />
                 </Grid>
               </Grid>
             </Box>
           </Box>
+          {/* ) : null} */}
+        </Box>
+      </Stack>
     </>
   )
-}
-
-DashboardPage.getLayout = function getLayout(page: React.ReactNode) {
-  return <MainLayout title="Dashboard">{page}</MainLayout>
 }

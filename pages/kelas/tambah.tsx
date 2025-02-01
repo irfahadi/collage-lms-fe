@@ -44,7 +44,6 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { PatientType } from '@models/Patients'
 import { PersonAddOutlined } from '@mui/icons-material'
-import { handleDateChange } from '@utils/date'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { toaster } from '@utils/toaster'
@@ -82,7 +81,7 @@ export default function TambahKelas() {
       akhir_kelas: '',
       deskripsi: '',
       tag: '',
-      thumnail_kelas: '',
+      thumbnail_kelas: '',
       program_studi: {
         label: '',
         id: '',
@@ -280,11 +279,9 @@ export default function TambahKelas() {
                         ? dayjs(formik.values.mulai_kelas)
                         : null
                     }
-                    onChange={(value: any) => {
-                      handleDateChange(value, (date: any) => {
-                        formik.setFieldValue('mulai_kelas', date)
-                      })
-                    }}
+                    onChange={(value: any) =>
+                      formik.setFieldValue('mulai_kelas', value)
+                    }
                   />
                 </Stack>
               </Grid>
@@ -297,11 +294,9 @@ export default function TambahKelas() {
                         ? dayjs(formik.values.akhir_kelas)
                         : null
                     }
-                    onChange={(value: any) => {
-                      handleDateChange(value, (date: any) => {
-                        formik.setFieldValue('akhir_kelas', date)
-                      })
-                    }}
+                    onChange={(value: any) =>
+                      formik.setFieldValue('akhir_kelas', value)
+                    }
                   />
                 </Stack>
               </Grid>
@@ -414,7 +409,7 @@ export default function TambahKelas() {
                   isOptionEqualToValue={(option, value) => {
                     return option.label === value.label
                   }}
-                  id="clinic"
+                  id="fakultas"
                   value={
                     // clinicList?.data?.find(
                     //   (el: any) => el.id === formik.values.clinic_id

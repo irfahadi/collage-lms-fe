@@ -2,13 +2,10 @@ import { Badge, IconButton, Menu, MenuItem, Typography } from '@mui/material'
 import React from 'react'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { useNotifications } from '@utils/hooks/use-notification'
-import { useAuth } from '@store/auth'
+// import { useAuth } from '@store/auth'
 import { NotificationsOutlined } from '@mui/icons-material'
 
 export default function Notification() {
-  const {
-    state: { user },
-  }: any = useAuth()
   // const { data: notifList = [] } = useNotifications(user?.id)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -22,7 +19,7 @@ export default function Notification() {
     setAnchorElUser(null)
   }
 
-  const notifList: any = {data:[]}
+  const notifList: any = { data: [] }
 
   return (
     <>

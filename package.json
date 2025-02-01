@@ -38,6 +38,8 @@
     "@tiptap/pm": "^2.8.0",
     "@tiptap/react": "^2.8.0",
     "@tiptap/starter-kit": "^2.8.0",
+    "@types/js-cookie": "^3.0.6",
+    "@types/jwt-decode": "^2.2.1",
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
@@ -49,6 +51,7 @@
     "formik": "^2.4.2",
     "i18next": "^23.4.6",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "material-ui-dropzone": "^3.5.0",
     "mem": "^9.0.2",
     "moment": "^2.29.4",
@@ -58,6 +61,7 @@
     "next-react-svg": "^1.2.0",
     "pdf-lib": "^1.17.1",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
     "react-colorful": "^5.6.1",
     "react-datetime-picker": "^5.5.3",
@@ -75,6 +79,7 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.8",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.33.0"
   },

@@ -7,7 +7,7 @@ const refreshTokenFn = async () => {
   try {
     const response = await axiosPublic.post('/api/auth/refreshToken', {
       token: {
-        token: Cookies.get('refresh_token_chat'),
+        token: Cookies.get('refresh_token'),
       },
     })
 
@@ -16,12 +16,12 @@ const refreshTokenFn = async () => {
     if (!accessToken) {
       throw response
     }
-    document.cookie = cookie.serialize('access_token_chat', accessToken, {
+    document.cookie = cookie.serialize('access_token', accessToken, {
       sameSite: true,
       path: '/',
       maxAge: 60 * 60 * 24 * 30, //1 month
     })
-    document.cookie = cookie.serialize('refresh_token_chat', refreshToken, {
+    document.cookie = cookie.serialize('refresh_token', refreshToken, {
       sameSite: true,
       path: '/',
       maxAge: 60 * 60 * 24 * 30, //1 month

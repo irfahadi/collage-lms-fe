@@ -24,10 +24,6 @@ import { useTranslation } from 'react-i18next'
 import MenuIcon from '@mui/icons-material/Menu'
 import TabledSidebar from '../tabled-sidebar'
 import { MaButton } from '@components/atoms'
-const ButtonSwitchLanguage = dynamic(
-  () => import('@components/molecules/button-switch-languange'),
-  { ssr: false }
-)
 
 type NavbarProps = {
   title: string

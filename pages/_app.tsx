@@ -1,6 +1,5 @@
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { AuthProvider } from '@store/auth'
 import '@styles/globals.css'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
@@ -15,6 +14,7 @@ import 'react-quill/dist/quill.snow.css'
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import { PatientProvider } from '@store/patient'
 import '../utils/string.extensions'
+import { useRouter } from 'next/router'
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page?: ReactElement) => ReactNode | ReactElement
@@ -25,6 +25,7 @@ type AppPropsWithLayout = AppProps & {
 }
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const router = useRouter()
   const getLayout = Component.getLayout || ((page) => page)
   const { i18n, t } = useTranslation()
 
@@ -162,26 +163,26 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }, []) // Empty dependency array so the effect runs on every render
 
   return (
-    <AuthProvider>
-      <PatientProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
-              {getLayout(<Component {...pageProps} />)}
-            </Box>
-            <ToastContainer position="bottom-right" />
+    // <AuthProvider>
+    // <PatientProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Box sx={{ backgroundColor: '#fafafa', minHeight: '100vh' }}>
+          {getLayout(<Component {...pageProps} />)}
+        </Box>
+        <ToastContainer position="bottom-right" />
 
-            {/* <ModalIdle
+        {/* <ModalIdle
               open={openModal}
               onIdleLogout={onIdleLogout}
               remaining={remaining}
               stillHere={() => activate()}
               isIdle={false}
             /> */}
-          </LocalizationProvider>
-        </ThemeProvider>
-      </PatientProvider>
-    </AuthProvider>
+      </LocalizationProvider>
+    </ThemeProvider>
+    // </PatientProvider>
+    // </AuthProvider>
   )
 }

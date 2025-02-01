@@ -5,14 +5,14 @@ const instance = axios.create()
 
 export const loginWithEmail = (payload: any) => {
   return instance
-    .post('/api/login', payload)
+    .post('/api/token/', payload)
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err.response))
 }
 
-export const changePassword = (payload: any) => {
+export const getUserData = (id?: string) => {
   return axiosPrivate
-    .post('/api/resetPassword', payload)
+    .get(`/api/v1/user/` + id)
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err.response))
 }

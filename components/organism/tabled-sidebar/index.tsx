@@ -24,7 +24,6 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { NavType } from '../sidebar/types'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '@store/auth'
 import { BarChart, EmailOutlined } from '@mui/icons-material'
 
 type Props = {
@@ -34,9 +33,6 @@ type Props = {
 export default function TabledSidebar({ onChange }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
-  const {
-    state: { user },
-  }: any = useAuth()
 
   return (
     <Stack
