@@ -22,27 +22,11 @@ import {
 import Link from '@mui/material/Link'
 import React, { useEffect } from 'react'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import {
-  InputFile,
-  LinkedGenie,
-  MaButton,
-  MaDropZoneArea,
-} from '@components/atoms'
-import { useClinics } from '@utils/hooks/use-clinics'
+import { InputFile, MaButton, MaDropZoneArea } from '@components/atoms'
 import { FormikValues, useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useGenders } from '@utils/hooks/use-gender'
-import { useStaffs } from '@utils/hooks/use-staffs'
-import { usePrefectures } from '@utils/hooks/use-prefectures'
-import { uploadToGdrive } from '@utils/services/google-drive'
-import {
-  createPatient,
-  getPatientDetail,
-  updatePatient,
-} from '@utils/services/patients'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import { PatientType } from '@models/Patients'
 import { PersonAddOutlined } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
@@ -57,9 +41,7 @@ export default function TambahTopik() {
   const router = useRouter()
   const { edit } = router.query
   const [isFormChange, setIsFormChange] = React.useState(false)
-  const [detailPatient, setDetailPatient] = React.useState<PatientType | null>(
-    null
-  )
+  const [detailPatient, setDetailPatient] = React.useState<any | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
 

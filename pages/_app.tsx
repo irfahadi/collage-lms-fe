@@ -12,7 +12,6 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
 import 'react-quill/dist/quill.snow.css'
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
-import { PatientProvider } from '@store/patient'
 import '../utils/string.extensions'
 import { useRouter } from 'next/router'
 

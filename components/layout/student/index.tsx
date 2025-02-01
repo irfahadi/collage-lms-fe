@@ -1,9 +1,6 @@
 import { Navbar, Sidebar } from '@components/organism'
 import SidebarStudent from '@components/organism/sidebar-stundent'
-import { Dashboard } from '@models/Dashboard'
 import { Box, useMediaQuery } from '@mui/material'
-import { usePatient } from '@store/patient'
-import { usePatients } from '@utils/hooks/use-patients'
 import { t } from 'i18next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -21,10 +18,6 @@ export default function StudentLayout({
   isWithSidebar = true,
 }: StudentLayoutProps) {
   const router = useRouter()
-  const {
-    state: { patient },
-    handleSetPatient,
-  }: any = usePatient()
   const [isCollapse, setIsCollapse] = React.useState(false)
   const isTabletView = useMediaQuery('(max-width: 1180px)')
 
@@ -56,13 +49,7 @@ export default function StudentLayout({
   return (
     <>
       <Head>
-        <title>
-          {router.pathname.includes('/patients/[id]')
-            ? !patient?.patient_kanji
-              ? t('loading')
-              : `${patient?.patient_kanji} (${patient?.patient_furigana})`
-            : title ?? 'Navbar'}
-        </title>
+        <title>Skuring</title>
         {/* favicon */}
         <link
           href={`${process.env.NEXT_PUBLIC_BASEPATH || ''}/favicon.ico`}

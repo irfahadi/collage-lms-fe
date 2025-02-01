@@ -133,7 +133,7 @@ export default function StudyProgramTabel(props: ClassTableProps) {
             <StyledTableCell sx={{ width: '200px' }}>Aksi</StyledTableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        {/* <TableBody>
           {studyPrograms.map((row: StudyProgramModel) => {
             return (
               <TableRow key={row.id}>
@@ -228,16 +228,16 @@ export default function StudyProgramTabel(props: ClassTableProps) {
               </TableRow>
             )
           })}
-          {/* {data?.length === 0 ? (
+          {data?.length === 0 ? (
             <TableRow>
               <TableCell colSpan={7} sx={{ textAlign: 'center' }}>
                 <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                  {t('no_data')}
+                  Tidak Ada Data Program Studi
                 </Typography>
               </TableCell>
             </TableRow>
-          ) : null} */}
-        </TableBody>
+          ) : null} 
+        </TableBody> */}
         {data.length > 0 && (
           <TableFooter>
             <TableRow>

@@ -122,7 +122,7 @@ export default function StudentsTabel(props: ClassTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row: UserModel) => {
+          {data.map((row: UserModelWithRelation) => {
             return (
               <TableRow key={row.id}>
                 <TableCell

@@ -12,13 +12,11 @@ import {
 } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { usePatient } from '@store/patient'
 import BackButton from '@components/atoms/back-button'
 
 export default function KuisTopik() {
   const router = useRouter()
   const { id, tab } = router.query
-  const { handleSetPatient }: any = usePatient()
   const [isAddStudents, setisAddStudents] = React.useState(false)
   // const [detailPatient, setDetailPatient] = React.useState<PatientType | null>(
   //   null

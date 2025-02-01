@@ -10,7 +10,6 @@ import {
 } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { usePatient } from '@store/patient'
 import BackButton from '@components/atoms/back-button'
 import CardInfo from '@components/molecules/card-info'
 import DiscussionForum from '@components/molecules/discussion-forum'
@@ -24,7 +23,6 @@ import PaginationButtons from '@components/atoms/pagination-button'
 export default function KuisTopik() {
   const router = useRouter()
   const { id, tab } = router.query
-  const { handleSetPatient }: any = usePatient()
   const [currentQuestion, setCurrentQuestion] = React.useState(1)
   const questions = [
     {

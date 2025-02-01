@@ -135,7 +135,7 @@ export default function ClassTabel(props: ClassTableProps) {
             <StyledTableCell sx={{ width: '200px' }}>Aksi</StyledTableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        {/* <TableBody>
           {classes.map((row: ClassModelWithRelations) => {
             const date = formatDateRange(row.start_date, row.end_date)
             return (
@@ -252,7 +252,7 @@ export default function ClassTabel(props: ClassTableProps) {
               </TableCell>
             </TableRow>
           ) : null}
-        </TableBody>
+        </TableBody> */}
         {/* {data.length > 0 && (
           <TableFooter>
             <TableRow>

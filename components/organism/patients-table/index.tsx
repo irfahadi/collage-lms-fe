@@ -21,7 +21,6 @@ import { MaButton, TablePaginationActions } from '@components/atoms'
 import { PatientCard, PatientExternalLink } from '@components/molecules'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { PatientType, TreatmentStatuses } from '@models/Patients'
 import { useTranslation } from 'react-i18next'
 import AscendingIcon from '@assets/icons/ascending.svg'
 import DescendingIcon from '@assets/icons/descending.svg'
@@ -365,16 +364,14 @@ export default function PatientsTable(props: PatientsTableProps) {
                           ? `${recordDate?.[0]}年 ${recordDate?.[1]}月 ${recordDate?.[2]}日`
                           : ''}
                       </Typography>
-                      {row?.record?.treatment_statuses?.map(
-                        (status: TreatmentStatuses) => (
-                          <Typography
-                            key={status.id}
-                            sx={{ fontSize: isTabletView ? '12px' : '16px' }}
-                          >
-                            {status.treatment_status}
-                          </Typography>
-                        )
-                      )}
+                      {row?.record?.treatment_statuses?.map((status: any) => (
+                        <Typography
+                          key={status.id}
+                          sx={{ fontSize: isTabletView ? '12px' : '16px' }}
+                        >
+                          {status.treatment_status}
+                        </Typography>
+                      ))}
                     </Stack>
                   </Link>
                 </TableCell>

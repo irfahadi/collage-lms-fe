@@ -2,7 +2,6 @@ import MainLayout from '@components/layout/main'
 import { Box, Button, Grid, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { usePatient } from '@store/patient'
 import BackButton from '@components/atoms/back-button'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import TopicCard from '@components/molecules/topic-card'
@@ -10,7 +9,6 @@ import TopicCard from '@components/molecules/topic-card'
 export default function ManageTopik() {
   const router = useRouter()
   const { id, tab } = router.query
-  const { handleSetPatient }: any = usePatient()
   const [isAddStudents, setisAddStudents] = React.useState(false)
   // const [detailPatient, setDetailPatient] = React.useState<PatientType | null>(
   //   null

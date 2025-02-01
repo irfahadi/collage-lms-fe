@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import MainLayout from '@components/layout/main'
 import { Box, Drawer, Stack, useMediaQuery } from '@mui/material'
-import { usePatients } from '@utils/hooks/use-patients'
 import { useRouter } from 'next/router'
 import { MaButton } from '@components/atoms'
 import ClassTabel from '@components/organism/class-table'

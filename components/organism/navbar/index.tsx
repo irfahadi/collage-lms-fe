@@ -15,10 +15,8 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Notification, SearchInput } from '@components/molecules'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { useAuth } from '@store/auth'
 import ModalConfirmLogout from '../modal-confirm-logout'
 import { useTranslation } from 'react-i18next'
 import MenuIcon from '@mui/icons-material/Menu'

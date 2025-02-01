@@ -1,16 +1,14 @@
 import { Box, Stack, Typography, useMediaQuery } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
-import { DashboardData } from '@models/Dashboard'
 import UserImage from '@assets/images/default-user.jpeg'
-import { PatientType } from '@models/Patients'
 import { nthNumber } from '@utils/number'
 import { t } from 'i18next'
 import { checkIsUUID } from '@utils/common'
 import { useTranslation } from 'react-i18next'
 
 interface UserData {
-  user: PatientType | DashboardData
+  user: any
 }
 
 export default function PatientCard({ user }: UserData) {

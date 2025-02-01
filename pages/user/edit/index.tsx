@@ -26,27 +26,11 @@ import {
 import Link from '@mui/material/Link'
 import React, { useEffect } from 'react'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
-import {
-  InputFile,
-  LinkedGenie,
-  MaButton,
-  MaDropZoneArea,
-} from '@components/atoms'
-import { useClinics } from '@utils/hooks/use-clinics'
+import { InputFile, MaButton, MaDropZoneArea } from '@components/atoms'
 import { FormikValues, useFormik } from 'formik'
 import * as Yup from 'yup'
-import { useGenders } from '@utils/hooks/use-gender'
-import { useStaffs } from '@utils/hooks/use-staffs'
-import { usePrefectures } from '@utils/hooks/use-prefectures'
-import { uploadToGdrive } from '@utils/services/google-drive'
-import {
-  createPatient,
-  getPatientDetail,
-  updatePatient,
-} from '@utils/services/patients'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
-import { PatientType } from '@models/Patients'
 import { PersonAddOutlined } from '@mui/icons-material'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
@@ -55,20 +39,10 @@ import { defaultBox } from '@styles/index'
 import { DatePicker } from '@mui/x-date-pickers'
 
 export default function EditUser() {
-  const { data: clinicList = [], isLoading: loadingClinic } =
-    useClinics('per_page=1000')
-  const { data: genderList = [], isLoading: loadinggender } = useGenders()
-  const { data: stafList = [], isLoading: loadingStaff } = useStaffs()
-  const { data: prefecturesList = [], isLoading: loadingPrefecture } =
-    usePrefectures('per_page=47')
-  const isTabletView = useMediaQuery('(max-width: 1180px)')
-  const { t } = useTranslation()
   const router = useRouter()
   const { edit } = router.query
   const [isFormChange, setIsFormChange] = React.useState(false)
-  const [detailPatient, setDetailPatient] = React.useState<PatientType | null>(
-    null
-  )
+  const [detailPatient, setDetailPatient] = React.useState<any | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
   // const [file, setFile] = React.useState<any>(null)
@@ -108,7 +82,7 @@ export default function EditUser() {
     //     })
     //   ),
     // }),
-    onSubmit: handleSubmit,
+    onSubmit: () => {},
   })
 
   const handleFileChange = (file: any) => {
@@ -116,62 +90,62 @@ export default function EditUser() {
     formik.setFieldValue('file', file[0])
   }
 
-  async function handleSubmit(values: FormikValues) {
-    try {
-      setIsLoading(true)
+  // async function handleSubmit(values: FormikValues) {
+  //   try {
+  //     setIsLoading(true)
 
-      let data = new FormData()
-      data.append('clinic_id', values.clinic_id || '')
-      data.append('patient_number', values.patient_number || '')
-      data.append('patient_kanji', values.patient_kanji || '')
-      data.append('patient_furigana', values.patient_furigana || '')
-      data.append('patient_romaji', values.patient_romaji || '')
-      data.append('date_of_birth', values.date_of_birth || '')
-      data.append('gender_id', values.gender_id || '')
-      values.post_code && data.append('post_code', values.post_code || '')
-      values.prefecture_id &&
-        data.append('prefecture_id', values.prefecture_id || '')
-      values.address && data.append('address', values.address || '')
-      data.append('doctor_id', values.doctor_id || '')
-      data.append('staff_id', values.staff_id || '')
-      // data.append('phone_number', values.phone_number || '')
-      // data.append('telephone_number', values.telephone_number || '')
-      data.append('line', values.LINE || '')
-      data.append('email', values.email || '')
-      data.append('invisalign', values.invisalign || '')
-      data.append('invisalign_cc', values.invisalign_cc || '')
-      data.append('webceph', values.webceph || '')
-      data.append('face_photo', values.file || '')
-      data.append('memo', values.memo || '')
+  //     let data = new FormData()
+  //     data.append('clinic_id', values.clinic_id || '')
+  //     data.append('patient_number', values.patient_number || '')
+  //     data.append('patient_kanji', values.patient_kanji || '')
+  //     data.append('patient_furigana', values.patient_furigana || '')
+  //     data.append('patient_romaji', values.patient_romaji || '')
+  //     data.append('date_of_birth', values.date_of_birth || '')
+  //     data.append('gender_id', values.gender_id || '')
+  //     values.post_code && data.append('post_code', values.post_code || '')
+  //     values.prefecture_id &&
+  //       data.append('prefecture_id', values.prefecture_id || '')
+  //     values.address && data.append('address', values.address || '')
+  //     data.append('doctor_id', values.doctor_id || '')
+  //     data.append('staff_id', values.staff_id || '')
+  //     // data.append('phone_number', values.phone_number || '')
+  //     // data.append('telephone_number', values.telephone_number || '')
+  //     data.append('line', values.LINE || '')
+  //     data.append('email', values.email || '')
+  //     data.append('invisalign', values.invisalign || '')
+  //     data.append('invisalign_cc', values.invisalign_cc || '')
+  //     data.append('webceph', values.webceph || '')
+  //     data.append('face_photo', values.file || '')
+  //     data.append('memo', values.memo || '')
 
-      const filtered = values.relative_contact?.filter(
-        (el: any) => el.number !== ''
-      )
-      filtered?.forEach((el: any, idx: number) => {
-        data.append(`relative_contact_type[]`, el.type)
-        data.append(`relative_contact_phone_number[]`, el?.number || '')
-      })
+  //     const filtered = values.relative_contact?.filter(
+  //       (el: any) => el.number !== ''
+  //     )
+  //     filtered?.forEach((el: any, idx: number) => {
+  //       data.append(`relative_contact_type[]`, el.type)
+  //       data.append(`relative_contact_phone_number[]`, el?.number || '')
+  //     })
 
-      const result = await createPatient(data)
+  //     const result = await createPatient(data)
 
-      if (result?.code === 201) {
-        const userId = result.data.id
-        toaster('Tambah Kelas Berhasil', 'SUCCESS')
-        localStorage.removeItem('routing')
-        router.replace(`/kelas`)
-      } else {
-        throw result
-      }
-    } catch (err: any) {
-      setIsLoading(false)
-      setErrorMessage(
-        err?.data?.debug?.message ||
-          err?.data?.message ||
-          err?.statusText ||
-          'terjadi kesalahan sistem'
-      )
-    }
-  }
+  //     if (result?.code === 201) {
+  //       const userId = result.data.id
+  //       toaster('Tambah Kelas Berhasil', 'SUCCESS')
+  //       localStorage.removeItem('routing')
+  //       router.replace(`/kelas`)
+  //     } else {
+  //       throw result
+  //     }
+  //   } catch (err: any) {
+  //     setIsLoading(false)
+  //     setErrorMessage(
+  //       err?.data?.debug?.message ||
+  //         err?.data?.message ||
+  //         err?.statusText ||
+  //         'terjadi kesalahan sistem'
+  //     )
+  //   }
+  // }
 
   // async function handleGetDetailPatient() {
   //   try {

@@ -15,7 +15,7 @@ import { getUserData, loginWithEmail } from '@utils/services/auth'
 import { useRouter } from 'next/router'
 import { FormikValues, useFormik } from 'formik'
 import * as yup from 'yup'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Visibility } from '@mui/icons-material'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 
@@ -184,7 +184,7 @@ const Login: React.FC = () => {
                       onClick={handleClickShowPassword}
                       edge="end"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      <Visibility />
                     </IconButton>
                   </InputAdornment>
                 ),

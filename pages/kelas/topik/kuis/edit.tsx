@@ -12,7 +12,6 @@ import {
 } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { usePatient } from '@store/patient'
 import BackButton from '@components/atoms/back-button'
 import QuestionCard from '@components/molecules/question-card'
 import AddQuestionButton from '@components/atoms/add-question-button'
@@ -21,7 +20,6 @@ import StickyHeader from '@components/molecules/sticky-header'
 export default function EditKuisTopik() {
   const router = useRouter()
   const { id, tab } = router.query
-  const { handleSetPatient }: any = usePatient()
   const [isAddStudents, setisAddStudents] = React.useState(false)
   // const [detailPatient, setDetailPatient] = React.useState<PatientType | null>(
   //   null
@@ -155,7 +153,7 @@ export default function EditKuisTopik() {
     >
       <StickyHeader onSave={() => console.log('Save Quiz')} />
 
-      {questions.map((q) => (
+      {/* {questions.map((q) => (
         <QuestionCard
           key={q.id}
           question={q.question}
@@ -172,7 +170,7 @@ export default function EditKuisTopik() {
           onDeleteOption={(optionId) => handleDeleteOption(q.id, optionId)}
           onDeleteQuestion={() => handleDeleteQuestion(q.id)}
         />
-      ))}
+      ))} */}
 
       <AddQuestionButton onAddQuestion={handleAddQuestion} />
     </Box>

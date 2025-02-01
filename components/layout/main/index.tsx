@@ -1,7 +1,5 @@
 import { Navbar, Sidebar } from '@components/organism'
 import { Box, useMediaQuery } from '@mui/material'
-import { usePatients } from '@utils/hooks/use-patients'
-import { t } from 'i18next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
