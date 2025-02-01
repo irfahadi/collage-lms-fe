@@ -1,5 +1,4 @@
 import { Navbar, Sidebar } from '@components/organism'
-import { Dashboard } from '@models/Dashboard'
 import { Box, useMediaQuery } from '@mui/material'
 import { usePatients } from '@utils/hooks/use-patients'
 import { t } from 'i18next'

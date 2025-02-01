@@ -2,16 +2,12 @@ import useSWR, { mutate } from 'swr'
 
 import { fetcher } from '@libs/fetch'
 
-export const usePaymentMethod = (query: string = '') => {
-  const destination = '/api/payment-method-management/first-consult/list'
+export const useFaculities = (query: string = '') => {
+  const destination = '/api/v1/faculty'
 
   const { data, error } = useSWR(
     [destination, query],
-    (url: string, query: string) => fetcher(url, query),
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    (url: string, query: string) => fetcher(url, query)
   )
 
   const revalidate = () => {
@@ -27,16 +23,12 @@ export const usePaymentMethod = (query: string = '') => {
   }
 }
 
-export const usePaymentMethodDeposit = (query: string = '') => {
-  const destination = '/api/payment-method-management/deposit/list'
+export const useFaculityDetail = (id: string | number, query: string = '') => {
+  const destination = id ? `/api/v1/faculty/${id}` : null
 
   const { data, error } = useSWR(
     [destination, query],
-    (url: string, query: string) => fetcher(url, query),
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    (url: string, query: string) => fetcher(url, query)
   )
 
   const revalidate = () => {

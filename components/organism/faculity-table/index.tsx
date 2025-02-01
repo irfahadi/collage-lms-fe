@@ -24,7 +24,7 @@ import { classes, faculties } from '@utils/dummy'
 import { formatDateRange } from '@utils/date'
 
 interface ClassTableProps {
-  data: any
+  data: FacultyModel[]
   page: number
   rowsPerPage: number
   onPageChange: (
@@ -35,16 +35,8 @@ interface ClassTableProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
   totalPage: number
-  onClick: (title: string, value: string) => void
-  patientName: string
-  doctor: string
-  firstConsult: string
-  nextReservation: string
-  setPatientName: React.Dispatch<React.SetStateAction<string>>
-  setDoctor: React.Dispatch<React.SetStateAction<string>>
-  setFirstConsult: React.Dispatch<React.SetStateAction<string>>
+  onClick?: (title: string, value: string) => void
   onRowClick?: (data: any) => void
-  setNextReservation: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function FaculityTabel(props: ClassTableProps) {
@@ -134,7 +126,7 @@ export default function FaculityTabel(props: ClassTableProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {faculties.map((row: FacultyModel) => {
+          {data.map((row: FacultyModel) => {
             return (
               <TableRow key={row.id}>
                 <TableCell
@@ -178,7 +170,7 @@ export default function FaculityTabel(props: ClassTableProps) {
                   sx={{ textAlign: 'center', px: 0.5, width: '300px' }}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.established_year}
+                    {new Date(row.estalbished).getFullYear()}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -186,10 +178,10 @@ export default function FaculityTabel(props: ClassTableProps) {
                   sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.contact_email}
+                    {row.email}
                   </Typography>
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.contact_phone}
+                    {row.phone}
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ px: 0.5, width: '200px' }}>
@@ -238,7 +230,7 @@ export default function FaculityTabel(props: ClassTableProps) {
             </TableRow>
           ) : null} */}
         </TableBody>
-        {data.length > 0 && (
+        {/* {data.length > 0 && (
           <TableFooter>
             <TableRow>
               <TablePagination
@@ -259,7 +251,7 @@ export default function FaculityTabel(props: ClassTableProps) {
               />
             </TableRow>
           </TableFooter>
-        )}
+        )} */}
       </Table>
     </TableContainer>
   )
