@@ -10,7 +10,6 @@ import { useClasses } from '@utils/hooks/use-class'
 export default function LihatKelas() {
   const router = useRouter()
   const { search } = router.query
-  const [isOpenModalAggree, setIsOpenModalAggree] = React.useState(false)
   const [searchFilter, setSearchFilter] = React.useState<string>('')
   const [selectedPatient, setSelectedPatient] = React.useState<any>({})
   const [page, setPage] = React.useState(0)
@@ -90,7 +89,7 @@ export default function LihatKelas() {
       <Box sx={{ maxWidth: 'inherit' }}>
         <ClassTabel
           totalPage={0}
-          data={[]}
+          data={classesData}
           page={page}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}

@@ -17,11 +17,16 @@ import { toaster } from '@utils/toaster'
 import { defaultBox } from '@styles/index'
 import { DatePicker } from '@mui/x-date-pickers'
 import { useFaculities } from '@utils/hooks/use-faculity'
-import { createStudyProgram } from '@utils/services/study-program'
+import {
+  createStudyProgram,
+  updateStudyProgram,
+} from '@utils/services/study-program'
+import { useStudyProgramDetail } from '@utils/hooks/use-study-program'
 
-export default function TambahProdi() {
+export default function EditProdi() {
   const isTabletView = useMediaQuery('(max-width: 1180px)')
   const router = useRouter()
+  const { id } = router.query
   const [faculity, setFaculity] = React.useState({
     label: '',
     id: '',
@@ -29,6 +34,25 @@ export default function TambahProdi() {
   const [isLoading, setIsLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
   const { data: faculitiesData = [] } = useFaculities()
+  const { data: studyProgramData = undefined } = useStudyProgramDetail(
+    id as string
+  )
+
+  React.useEffect(() => {
+    if (studyProgramData) {
+      formik.setValues(studyProgramData)
+
+      const faculityOptionsData = faculitiesData.map((item: any) => ({
+        id: item.id,
+        label: item.name,
+      }))
+      setFaculity(
+        faculityOptionsData.find(
+          (item: any) => item.id === studyProgramData.faculty_id
+        )
+      )
+    }
+  }, [studyProgramData])
 
   const formik = useFormik({
     initialValues: {
@@ -48,10 +72,10 @@ export default function TambahProdi() {
     try {
       setIsLoading(true)
 
-      const result = await createStudyProgram(values)
+      const result = await updateStudyProgram(id as string, values)
 
       if (result) {
-        toaster('Tambah Prodi Berhasil', 'SUCCESS')
+        toaster('Edit Prodi Berhasil', 'SUCCESS')
         router.replace(`/prodi`)
       } else {
         throw result
@@ -126,6 +150,11 @@ export default function TambahProdi() {
                 <Stack>
                   <DatePicker
                     label="Tahun Berdiri"
+                    value={
+                      formik.values.estalbished
+                        ? dayjs(formik.values.estalbished)
+                        : null
+                    }
                     onChange={(value: any) =>
                       formik.setFieldValue(
                         'estalbished',
@@ -221,13 +250,13 @@ export default function TambahProdi() {
           {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
           <Stack direction="row" justifyContent="flex-end">
             <Stack direction="row" spacing={1}>
-              {/* <MaButton
+              <MaButton
                 disabled={isLoading}
                 onClick={() => router.back()}
                 variant="secondary"
               >
-                {t('cancel')}
-              </MaButton> */}
+                cancel
+              </MaButton>
               <MaButton disabled={isLoading} type="submit">
                 {isLoading ? 'loading...' : 'save'}
               </MaButton>
@@ -239,7 +268,7 @@ export default function TambahProdi() {
   )
 }
 
-TambahProdi.getLayout = function getLayout(page: React.ReactNode) {
+EditProdi.getLayout = function getLayout(page: React.ReactNode) {
   const router = useRouter()
   return <MainLayout title="Tambah Prodi">{page}</MainLayout>
 }

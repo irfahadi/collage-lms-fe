@@ -13,7 +13,6 @@ export default function LihatFakultas() {
   const [searchFilter, setSearchFilter] = React.useState<string>('')
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
-  const [open, setOpen] = React.useState(false)
   const isTabletView = useMediaQuery('(max-width: 1180px)')
   const [searchValue, setSearchValue] = React.useState('')
   const { data: faculitiesData = [] } = useFaculities()

@@ -19,12 +19,13 @@ import {
 import { styled } from '@mui/material/styles'
 import { MaButton, TablePaginationActions } from '@components/atoms'
 import { useRouter } from 'next/router'
-import ClassCard from '@components/molecules/class-card'
-import { classes, faculties, studyPrograms } from '@utils/dummy'
-import { formatDateRange } from '@utils/date'
+import ModalConfirmDelete from '../modal-confirm-delete'
+import { deleteStudyProgram } from '@utils/services/study-program'
+import { toaster } from '@utils/toaster'
+import { useStudyPrograms } from '@utils/hooks/use-study-program'
 
 interface ClassTableProps {
-  data: any
+  data: StudyProgramModel[]
   page: number
   rowsPerPage: number
   onPageChange: (
@@ -36,15 +37,7 @@ interface ClassTableProps {
   ) => void
   totalPage: number
   // onClick: (title: string, value: string) => void
-  patientName: string
-  doctor: string
-  firstConsult: string
-  nextReservation: string
-  setPatientName: React.Dispatch<React.SetStateAction<string>>
-  setDoctor: React.Dispatch<React.SetStateAction<string>>
-  setFirstConsult: React.Dispatch<React.SetStateAction<string>>
   onRowClick?: (data: any) => void
-  setNextReservation: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function StudyProgramTabel(props: ClassTableProps) {
@@ -59,6 +52,23 @@ export default function StudyProgramTabel(props: ClassTableProps) {
   } = props
   const router = useRouter()
   const isTabletView = useMediaQuery('(max-width: 1180px)')
+  const [isOpenModal, setIsOpenModal] = React.useState(false)
+  const [id, setId] = React.useState('')
+  const [isLoading, setIsLoading] = React.useState(false)
+  const { revalidate } = useStudyPrograms()
+
+  async function handleDelete(id: string) {
+    deleteStudyProgram(id as string)
+      .then(() => {
+        revalidate
+        toaster('Hapus Data Prodi Berhasil', 'SUCCESS')
+        setIsOpenModal(false)
+      })
+      .catch((err: any) => {
+        setIsLoading(false)
+        // setErrorMessage('terjadi kesalahan sistem')
+      })
+  }
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -68,10 +78,6 @@ export default function StudyProgramTabel(props: ClassTableProps) {
     textAlign: 'center',
     padding: isTabletView ? '16px 5px' : 'auto',
   }))
-
-  const goToPatientDetailPage = (data: any) => {
-    // onRowClick(data)
-  }
 
   return (
     <TableContainer component={Paper}>
@@ -133,8 +139,8 @@ export default function StudyProgramTabel(props: ClassTableProps) {
             <StyledTableCell sx={{ width: '200px' }}>Aksi</StyledTableCell>
           </TableRow>
         </TableHead>
-        {/* <TableBody>
-          {studyPrograms.map((row: StudyProgramModel) => {
+        <TableBody>
+          {data.map((row: StudyProgramModel) => {
             return (
               <TableRow key={row.id}>
                 <TableCell
@@ -167,18 +173,16 @@ export default function StudyProgramTabel(props: ClassTableProps) {
                 </TableCell>
                 <TableCell
                   sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
-                  onClick={() => goToPatientDetailPage(row)}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.head_of_program}
+                    {row.head_name}
                   </Typography>
                 </TableCell>
                 <TableCell
-                  // onClick={() => goToPatientDetailPage(row)}
                   sx={{ textAlign: 'center', px: 0.5, width: '300px' }}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.established_year}
+                    {new Date(row.estalbished).getFullYear()}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -186,10 +190,10 @@ export default function StudyProgramTabel(props: ClassTableProps) {
                   sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.contact_email}
+                    {row.email}
                   </Typography>
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.contact_phone}
+                    {row.phone}
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ px: 0.5, width: '200px' }}>
@@ -202,7 +206,7 @@ export default function StudyProgramTabel(props: ClassTableProps) {
                     <Box>
                       <MaButton
                         size="small"
-                        onClick={() => router.push('prodi/edit')}
+                        onClick={() => router.push('prodi/edit/' + row.id)}
                         sx={{
                           textAlign: 'center',
                           fontSize: isTabletView ? '12px' : '12px',
@@ -214,7 +218,10 @@ export default function StudyProgramTabel(props: ClassTableProps) {
                     <Box>
                       <MaButton
                         size="small"
-                        onClick={() => goToPatientDetailPage(row)}
+                        onClick={() => {
+                          setId(row.id)
+                          setIsOpenModal(true)
+                        }}
                         sx={{
                           textAlign: 'center',
                           fontSize: isTabletView ? '12px' : '12px',
@@ -236,9 +243,9 @@ export default function StudyProgramTabel(props: ClassTableProps) {
                 </Typography>
               </TableCell>
             </TableRow>
-          ) : null} 
-        </TableBody> */}
-        {data.length > 0 && (
+          ) : null}
+        </TableBody>
+        {/* {data.length > 0 && (
           <TableFooter>
             <TableRow>
               <TablePagination
@@ -259,8 +266,15 @@ export default function StudyProgramTabel(props: ClassTableProps) {
               />
             </TableRow>
           </TableFooter>
-        )}
+        )} */}
       </Table>
+      <ModalConfirmDelete
+        title="Hapus Data Prodi"
+        open={isOpenModal}
+        handleClose={() => setIsOpenModal(false)}
+        handleConfirm={() => handleDelete(id)}
+        isLoading={isLoading}
+      />
     </TableContainer>
   )
 }

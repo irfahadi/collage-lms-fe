@@ -134,9 +134,9 @@ export default function Navbar({
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
                 >
-                  <MenuItem disabled>
+                  {/* <MenuItem disabled>
                     <Typography textAlign="center">user</Typography>
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem
                     onClick={() => {
                       setOpenModalLogout(true)
@@ -236,9 +236,9 @@ export default function Navbar({
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                <MenuItem disabled>
+                {/* <MenuItem disabled>
                   <Typography textAlign="center">user</Typography>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem
                   onClick={() => {
                     setOpenModalLogout(true)

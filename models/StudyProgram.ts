@@ -1,11 +1,12 @@
 interface StudyProgramModel {
-  id: number
+  id: string
   name: string
   code: string
   description: string
-  head_of_program: string
-  established_year: number
-  contact_email: string
-  contact_phone: string
+  head_name: string
+  estalbished: string
+  email: string
+  phone: string
+  faculty_id: string
   faculty: FacultyModel // Relasi ke tabel fakultas
 }

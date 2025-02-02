@@ -19,10 +19,10 @@ import {
 import { styled } from '@mui/material/styles'
 import { MaButton, TablePaginationActions } from '@components/atoms'
 import { useRouter } from 'next/router'
-import { classes, faculties } from '@utils/dummy'
 import ModalConfirmDelete from '../modal-confirm-delete'
 import { deleteFaculity } from '@utils/services/faculity'
 import { toaster } from '@utils/toaster'
+import { useFaculities } from '@utils/hooks/use-faculity'
 
 interface ClassTableProps {
   data: FacultyModel[]
@@ -55,25 +55,19 @@ export default function FaculityTabel(props: ClassTableProps) {
   const [open, setOpen] = React.useState(false)
   const [id, setId] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
+  const { revalidate } = useFaculities()
 
   async function handleDelete(id: string) {
-    try {
-      setIsLoading(true)
-
-      const result = await deleteFaculity(id as string)
-      console.log(result)
-
-      if (result) {
+    deleteFaculity(id as string)
+      .then(() => {
+        revalidate()
         toaster('Hapus Data Fakultas Berhasil', 'SUCCESS')
         setOpen(false)
-        // router.replace(`/fakultas`)
-      } else {
-        throw result
-      }
-    } catch (err: any) {
-      setIsLoading(false)
-      // setErrorMessage('terjadi kesalahan sistem')
-    }
+      })
+      .catch((err: any) => {
+        setIsLoading(false)
+        // setErrorMessage('terjadi kesalahan sistem')
+      })
   }
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({

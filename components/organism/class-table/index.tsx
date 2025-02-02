@@ -116,7 +116,7 @@ export default function ClassTabel(props: ClassTableProps) {
                 }}
                 gap={1}
               >
-                Jadwal
+                Periode
               </Stack>
             </StyledTableCell>
             <StyledTableCell sx={{ width: '200px' }}>
@@ -135,11 +135,10 @@ export default function ClassTabel(props: ClassTableProps) {
             <StyledTableCell sx={{ width: '200px' }}>Aksi</StyledTableCell>
           </TableRow>
         </TableHead>
-        {/* <TableBody>
-          {classes.map((row: ClassModelWithRelations) => {
-            const date = formatDateRange(row.start_date, row.end_date)
+        <TableBody>
+          {data.map((row: ClassModelWithRelations) => {
             return (
-              <TableRow key={row.class_id}>
+              <TableRow key={row.id}>
                 <TableCell
                   sx={{
                     width: '200px',
@@ -156,9 +155,7 @@ export default function ClassTabel(props: ClassTableProps) {
                   // onClick={() => goToPatientDetailPage(row)}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.responsible_lecturer.first_name +
-                      ' ' +
-                      row.responsible_lecturer.last_name}
+                    {row.lecturer.username}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -166,7 +163,7 @@ export default function ClassTabel(props: ClassTableProps) {
                   sx={{ textAlign: 'center', px: 0.5, width: '300px' }}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {date}
+                    {row.periodId}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -252,7 +249,7 @@ export default function ClassTabel(props: ClassTableProps) {
               </TableCell>
             </TableRow>
           ) : null}
-        </TableBody> */}
+        </TableBody>
         {/* {data.length > 0 && (
           <TableFooter>
             <TableRow>

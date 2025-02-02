@@ -205,7 +205,7 @@ const Login: React.FC = () => {
                 ':hover': { backgroundColor: '#003D80' },
               }}
             >
-              {isLoading ? 'loading...' : 'save'}
+              {isLoading ? 'loading...' : 'login'}
             </Button>
           </Box>
           <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>

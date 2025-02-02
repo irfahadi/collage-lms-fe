@@ -9,11 +9,9 @@ import {
 } from '@mui/material'
 import React from 'react'
 import Title from '../title'
-import CloseIcon from '@mui/icons-material/Close'
 import { MaButton } from '@components/atoms'
 import { useRouter } from 'next/router'
-// import { useAuth } from '@store/auth'
-import { t } from 'i18next'
+import Cookies from 'js-cookie'
 
 type ModalConfirmLogoutProps = {
   open: boolean
@@ -25,7 +23,24 @@ export default function ModalConfirmLogout({
   handleClose,
 }: ModalConfirmLogoutProps) {
   const router = useRouter()
-  // const { handleLogout }: any = useAuth()
+
+  const clearStorageAndCookies = () => {
+    // Hapus semua data di Local Storage
+    if (typeof window !== 'undefined') {
+      localStorage.clear()
+      sessionStorage.clear()
+    }
+
+    // Hapus semua Cookies
+    const cookies = document.cookie.split('; ')
+    for (const cookie of cookies) {
+      const eqPos = cookie.indexOf('=')
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie
+      Cookies.remove(name, { path: '/' }) // Pastikan menghapus di root path
+    }
+
+    router.push('/login')
+  }
   return (
     <Dialog fullWidth maxWidth={'xs'} open={open} onClose={handleClose}>
       <DialogTitle>
@@ -40,7 +55,7 @@ export default function ModalConfirmLogout({
         <MaButton variant="secondary" onClick={handleClose}>
           cancel
         </MaButton>
-        <MaButton onClick={() => {}}>logout</MaButton>
+        <MaButton onClick={clearStorageAndCookies}>logout</MaButton>
       </DialogActions>
     </Dialog>
   )

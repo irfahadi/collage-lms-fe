@@ -32,7 +32,7 @@ export default function ClassCard({ data }: ClassProps) {
             margin: 0,
           }}
         >
-          {data.class_name_long}
+          {data.name}
         </p>
         <p
           style={{
@@ -42,7 +42,7 @@ export default function ClassCard({ data }: ClassProps) {
             margin: 0,
           }}
         >
-          {data.class_code}
+          {data.code}
         </p>
       </Stack>
     </Stack>
