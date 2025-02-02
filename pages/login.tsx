@@ -15,7 +15,7 @@ import { getUserData, loginWithEmail } from '@utils/services/auth'
 import { useRouter } from 'next/router'
 import { FormikValues, useFormik } from 'formik'
 import * as yup from 'yup'
-import { Visibility } from '@mui/icons-material'
+import Visibility from '@mui/icons-material/Visibility'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 

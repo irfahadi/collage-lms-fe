@@ -29,24 +29,24 @@ export const treatmentTitleLocale = (treatment: string) => {
   }
 }
 
-export const convertHeicToJpg = async (file: any) => {
-  try {
-    const heic2any = require('heic2any')
-    // Convert the HEIC file to a JPEG Blob using heic2any
-    const convertedBlob: any = await heic2any({
-      blob: file,
-      toType: 'image/jpeg',
-    })
-    // Create a new File from the Blob
-    const convertedFile = new File([convertedBlob], 'file.jpg', {
-      type: 'image/jpeg',
-    })
-    return convertedFile
-  } catch (error) {
-    console.error('Conversion failed: ', error)
-    throw error // Rethrow the error so it can be handled by the caller
-  }
-}
+// export const convertHeicToJpg = async (file: any) => {
+//   try {
+//     const heic2any = require('heic2any')
+//     // Convert the HEIC file to a JPEG Blob using heic2any
+//     const convertedBlob: any = await heic2any({
+//       blob: file,
+//       toType: 'image/jpeg',
+//     })
+//     // Create a new File from the Blob
+//     const convertedFile = new File([convertedBlob], 'file.jpg', {
+//       type: 'image/jpeg',
+//     })
+//     return convertedFile
+//   } catch (error) {
+//     console.error('Conversion failed: ', error)
+//     throw error // Rethrow the error so it can be handled by the caller
+//   }
+// }
 
 export const countAge = (dateOfBirth: string) => {
   if (!dateOfBirth) return ''

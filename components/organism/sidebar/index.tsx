@@ -17,7 +17,6 @@ import {
 import MenuIcon from '@mui/icons-material/Menu'
 import React, { Fragment, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { BarChart, EmailOutlined } from '@mui/icons-material'
 import { UilChatBubbleUser } from '@iconscout/react-unicons'
 import { UilPlus } from '@iconscout/react-unicons'
 import { UilAngleDown } from '@iconscout/react-unicons'

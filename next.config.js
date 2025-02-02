@@ -45,8 +45,17 @@ module.exports = withBundleAnalyzer(
   withFonts(
     withReactSvg(
       process.env.NEXT_PUBLIC_BASEPATH
-        ? { ...nextConfig, assetPrefix: process.env.NEXT_PUBLIC_BASEPATH }
+        ? {
+            ...nextConfig,
+            assetPrefix: process.env.NEXT_PUBLIC_BASEPATH,
+            experimental: {
+              workerThreads: false,
+              cpus: 1,
+            },
+          }
         : nextConfig
     )
   )
 )
+
+// module.exports = {}

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, List, ListItem, ListItemText, Collapse } from '@mui/material'
-import { ExpandLess, ExpandMore } from '@mui/icons-material'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
 
 type MenuItem = {
   label: string

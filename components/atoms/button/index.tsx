@@ -6,7 +6,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import React from 'react'
-import * as MuiIcons from '@mui/icons-material'
+// import * as MuiIcons from '@mui/icons-material'
 import { Button } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
@@ -45,9 +45,9 @@ export default function MaButton({
   color,
   ...rest
 }: MaButtonProps) {
-  const StartIcon = startIcon
-    ? MuiIcons[startIcon as keyof typeof MuiIcons]
-    : null
+  // const StartIcon = startIcon
+  //   ? MuiIcons[startIcon as keyof typeof MuiIcons]
+  //   : null
   // const EndIcon = endIcon ? MuiIcons[endIcon as keyof typeof MuiIcons] : null
   const isTabletView = useMediaQuery('(max-width: 1180px)')
   const { i18n } = useTranslation()
@@ -194,7 +194,7 @@ export default function MaButton({
         size={size}
         onClick={onClick}
         variant={variantMap[variant]}
-        startIcon={StartIcon && <StartIcon />}
+        // startIcon={StartIcon && <StartIcon />}
         endIcon={endIcon}
         disabled={disabled}
         color={color}

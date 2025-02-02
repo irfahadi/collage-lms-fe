@@ -1,6 +1,6 @@
+import FilePresentOutlined from '@mui/icons-material/FilePresentOutlined'
 import { Box, FormHelperText, Input, Stack, Typography } from '@mui/material'
 import React from 'react'
-import { FilePresentOutlined, FileUploadOutlined } from '@mui/icons-material'
 type InputFileProps = {
   placeholder?: string
   onChange: (file: any) => void

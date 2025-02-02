@@ -24,7 +24,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { NavType } from '../sidebar/types'
 import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
-import { BarChart, EmailOutlined } from '@mui/icons-material'
+import EmailOutlined from '@mui/icons-material/EmailOutlined'
 
 type Props = {
   onChange: () => void
