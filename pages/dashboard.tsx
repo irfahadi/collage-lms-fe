@@ -22,35 +22,6 @@ import SchoolIcon from '@mui/icons-material/School'
 import ClassIcon from '@mui/icons-material/Class'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
 
-const SectionCard = ({
-  title,
-  icon,
-  description,
-  acctionButton,
-}: {
-  title?: string
-  icon?: any
-  description?: string
-  acctionButton?: any
-}) => {
-  return (
-    <Card>
-      <CardContent>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          {icon}
-          <Typography color="#212121" variant="h6">
-            {title}
-          </Typography>
-        </Stack>
-        <Typography variant="body2" color="#212121" mt={1}>
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ pb: 2 }}>{acctionButton}</CardActions>
-    </Card>
-  )
-}
-
 export const ConsultationIcon = () => (
   <svg
     width="48"
@@ -91,7 +62,19 @@ export const ConsultationIcon = () => (
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { token } = router.query
+  const [userData, setUserData] = React.useState({
+    username: null,
+  })
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Cek apakah kode berjalan di client
+      const storedUserData = localStorage.getItem('userdata')
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData))
+      }
+    }
+  }, [])
 
   return (
     <>
@@ -127,7 +110,9 @@ export default function DashboardPage() {
               justifyContent="space-between"
             >
               <Box>
-                <Typography variant="h6">Welcome, User!</Typography>
+                <Typography variant="h6">
+                  Halo {userData.username ? userData.username : 'Admin'}
+                </Typography>
                 <Typography variant="subtitle1">
                   Selamat datang di Sistem Kuliah Daring - skuring.com
                 </Typography>

@@ -19,9 +19,10 @@ import {
 import { styled } from '@mui/material/styles'
 import { MaButton, TablePaginationActions } from '@components/atoms'
 import { useRouter } from 'next/router'
-import ClassCard from '@components/molecules/class-card'
 import { classes, faculties } from '@utils/dummy'
-import { formatDateRange } from '@utils/date'
+import ModalConfirmDelete from '../modal-confirm-delete'
+import { deleteFaculity } from '@utils/services/faculity'
+import { toaster } from '@utils/toaster'
 
 interface ClassTableProps {
   data: FacultyModel[]
@@ -51,6 +52,29 @@ export default function FaculityTabel(props: ClassTableProps) {
   } = props
   const router = useRouter()
   const isTabletView = useMediaQuery('(max-width: 1180px)')
+  const [open, setOpen] = React.useState(false)
+  const [id, setId] = React.useState('')
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  async function handleDelete(id: string) {
+    try {
+      setIsLoading(true)
+
+      const result = await deleteFaculity(id as string)
+      console.log(result)
+
+      if (result) {
+        toaster('Hapus Data Fakultas Berhasil', 'SUCCESS')
+        setOpen(false)
+        // router.replace(`/fakultas`)
+      } else {
+        throw result
+      }
+    } catch (err: any) {
+      setIsLoading(false)
+      // setErrorMessage('terjadi kesalahan sistem')
+    }
+  }
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -60,10 +84,6 @@ export default function FaculityTabel(props: ClassTableProps) {
     textAlign: 'center',
     padding: isTabletView ? '16px 5px' : 'auto',
   }))
-
-  const goToPatientDetailPage = (data: any) => {
-    onRowClick(data)
-  }
 
   return (
     <TableContainer component={Paper}>
@@ -134,7 +154,6 @@ export default function FaculityTabel(props: ClassTableProps) {
                     width: '200px',
                     boxSizing: 'border-box',
                   }}
-                  // onClick={() => goToPatientDetailPage(row)}
                 >
                   <p
                     style={{
@@ -159,7 +178,6 @@ export default function FaculityTabel(props: ClassTableProps) {
                 </TableCell>
                 <TableCell
                   sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
-                  onClick={() => goToPatientDetailPage(row)}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
                     {row.dean_name}
@@ -194,7 +212,7 @@ export default function FaculityTabel(props: ClassTableProps) {
                     <Box>
                       <MaButton
                         size="small"
-                        onClick={() => router.push('fakultas/edit')}
+                        onClick={() => router.push('fakultas/edit/' + row.id)}
                         sx={{
                           textAlign: 'center',
                           fontSize: isTabletView ? '12px' : '12px',
@@ -206,7 +224,10 @@ export default function FaculityTabel(props: ClassTableProps) {
                     <Box>
                       <MaButton
                         size="small"
-                        onClick={() => goToPatientDetailPage(row)}
+                        onClick={() => {
+                          setId(row.id)
+                          setOpen(true)
+                        }}
                         sx={{
                           textAlign: 'center',
                           fontSize: isTabletView ? '12px' : '12px',
@@ -253,6 +274,13 @@ export default function FaculityTabel(props: ClassTableProps) {
           </TableFooter>
         )} */}
       </Table>
+      <ModalConfirmDelete
+        title="Hapus Data Fakultas"
+        open={open}
+        handleClose={() => setOpen(false)}
+        handleConfirm={() => handleDelete(id)}
+        isLoading={isLoading}
+      />
     </TableContainer>
   )
 }

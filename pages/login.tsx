@@ -205,13 +205,12 @@ const Login: React.FC = () => {
                 ':hover': { backgroundColor: '#003D80' },
               }}
             >
-              Login
+              {isLoading ? 'loading...' : 'save'}
             </Button>
           </Box>
           <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
-            Belum Punya Akun?{' '}
             <Link href="/register" underline="hover">
-              Register
+              Lupa Password? klik di sini
             </Link>
           </Typography>
           {errorMessage && (

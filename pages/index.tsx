@@ -126,80 +126,22 @@ export async function getServerSideProps(context: any) {
 export default function DashboardPage() {
   const { t } = useTranslation()
   const router = useRouter()
-  const { token } = router.query
-
   const [isLoading, setIsLoading] = React.useState(false)
   const [statusSubscribe, setStatusSubscribe] = React.useState(false)
   const isTabletView = useMediaQuery('(max-width: 1180px)')
+  const [userData, setUserData] = React.useState({
+    username: null,
+  })
 
-  //   const handleCheckUser = async (token: string) => {
-  //     try {
-  //       setIsLoading(true)
-  //       const res = await checkUser(token)
-  //       if (res?.code === 200) {
-  //         document.cookie = cookie.serialize('access_token_chat', token, {
-  //           sameSite: true,
-  //           path: '/',
-  //           maxAge: 60 * 60 * 24 * 30, //1 month
-  //         })
-  //         const role = await handleCheckRole(res?.data?.doctor?.id)
-  //         console.log(role, res?.data?.doctor?.id)
-  //         handleLogin({
-  //           ...res?.data,
-  //           role: role ? 'doctor consultant' : 'doctor',
-  //           clinic_id:
-  //             res?.data?.clinic_id ||
-  //             Number(process.env.NEXT_PUBLIC_CLINIC_ID || ''),
-  //         })
-
-  //         if (role) {
-  //           router.replace('/chat')
-  //         } else {
-  //           router.replace('/')
-  //         }
-  //         setIsLoading(false)
-  //       } else {
-  //         throw res
-  //       }
-  //     } catch (err) {
-  //       setIsLoading(false)
-  //       console.log(err)
-  //     }
-  //   }
-
-  //   const handleCheckRole = async (id: number) => {
-  //     try {
-  //       const res = await getDoctorConsultant()
-  //       if (res?.code === 200) {
-  //         const list = res?.data?.value
-  //         handleCheckSubscribe()
-  //         return list.includes(id)
-  //       } else {
-  //         throw res
-  //       }
-  //     } catch (err) {
-  //       console.log(err)
-  //       return false
-  //     }
-  //   }
-
-  //   const handleCheckSubscribe = async () => {
-  //     try {
-  //       const res = await getStatusSubscribe()
-  //       if (res?.code === 200) {
-  //         setStatusSubscribe(res?.data?.is_consultation_membership)
-  //       } else {
-  //         setStatusSubscribe(false)
-  //       }
-  //       setIsLoading(false)
-  //     } catch (err) {
-  //       console.log(err)
-  //     }
-  //   }
-
-  // useEffect(() => {
-  //   handleCheckSubscribe()
-  // }, [])
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Cek apakah kode berjalan di client
+      const storedUserData = localStorage.getItem('userdata')
+      if (storedUserData) {
+        setUserData(JSON.parse(storedUserData))
+      }
+    }
+  }, [])
 
   return (
     <>
@@ -246,7 +188,10 @@ export default function DashboardPage() {
                   justifyContent="space-between"
                 >
                   <Box>
-                    <Typography variant="h6">Halo User</Typography>
+                    <Typography variant="h6">
+                      {' '}
+                      Halo {userData.username ? userData.username : 'Admin'}
+                    </Typography>
                     <Typography variant="subtitle1">
                       Selamat datang di Sistem Kuliah Daring - skuring.com
                     </Typography>

@@ -13,16 +13,24 @@ import { FormikValues, useFormik } from 'formik'
 import { useRouter } from 'next/router'
 import { toaster } from '@utils/toaster'
 import { defaultBox } from '@styles/index'
-import { createFaculity } from '@utils/services/faculity'
+import { updateFaculity } from '@utils/services/faculity'
 import { DatePicker } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
+import { useFaculityDetail } from '@utils/hooks/use-faculity'
 
-export default function TambahFakultas() {
+export default function EditFakultas() {
   const isTabletView = useMediaQuery('(max-width: 1180px)')
   const router = useRouter()
-
+  const { id } = router.query
   const [isLoading, setIsLoading] = React.useState(false)
   const [errorMessage, setErrorMessage] = React.useState('')
+  const { data: faculityData = undefined } = useFaculityDetail(id as string)
+
+  React.useEffect(() => {
+    if (faculityData) {
+      formik.setValues(faculityData)
+    }
+  }, [faculityData])
 
   const formik = useFormik({
     initialValues: {
@@ -41,10 +49,10 @@ export default function TambahFakultas() {
     try {
       setIsLoading(true)
 
-      const result = await createFaculity(values)
+      const result = await updateFaculity(id as string, values)
 
       if (result) {
-        toaster('Tambah Fakultas Berhasil', 'SUCCESS')
+        toaster('Edit Fakultas Berhasil', 'SUCCESS')
         router.replace(`/fakultas`)
       } else {
         throw result
@@ -114,6 +122,11 @@ export default function TambahFakultas() {
                 <Stack>
                   <DatePicker
                     label="Tahun Berdiri"
+                    value={
+                      formik.values.estalbished
+                        ? dayjs(formik.values.estalbished)
+                        : null
+                    }
                     onChange={(value: any) =>
                       formik.setFieldValue(
                         'estalbished',
@@ -171,13 +184,13 @@ export default function TambahFakultas() {
           {errorMessage ? <Alert severity="error">{errorMessage}</Alert> : null}
           <Stack direction="row" justifyContent="flex-end">
             <Stack direction="row" spacing={1}>
-              {/* <MaButton
+              <MaButton
                 disabled={isLoading}
                 onClick={() => router.back()}
                 variant="secondary"
               >
-                {t('cancel')}
-              </MaButton> */}
+                Cancel
+              </MaButton>
               <MaButton disabled={isLoading} type="submit">
                 {isLoading ? 'loading...' : 'save'}
               </MaButton>
@@ -189,6 +202,6 @@ export default function TambahFakultas() {
   )
 }
 
-TambahFakultas.getLayout = function getLayout(page: React.ReactNode) {
+EditFakultas.getLayout = function getLayout(page: React.ReactNode) {
   return <MainLayout title="Tambah Fakultas">{page}</MainLayout>
 }
