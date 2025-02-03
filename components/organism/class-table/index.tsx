@@ -155,7 +155,7 @@ export default function ClassTabel(props: ClassTableProps) {
                   // onClick={() => goToPatientDetailPage(row)}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.lecturer.username}
+                    {row.lecturer_id.username}
                   </Typography>
                 </TableCell>
                 <TableCell
@@ -171,7 +171,7 @@ export default function ClassTabel(props: ClassTableProps) {
                   sx={{ textAlign: 'center', px: 0.5, width: '200px' }}
                 >
                   <Typography sx={{ fontSize: isTabletView ? '12px' : '16px' }}>
-                    {row.study_program.name}
+                    {row.study_program_id.name}
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ px: 0.5, width: '200px' }}>

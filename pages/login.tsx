@@ -6,7 +6,6 @@ import {
   Grid,
   TextField,
   Typography,
-  Link,
   InputAdornment,
   IconButton,
   Alert,
@@ -18,6 +17,7 @@ import * as yup from 'yup'
 import Visibility from '@mui/icons-material/Visibility'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
+import ModalResetPassword from '@components/organism/modal-forget-password'
 
 interface CustomJwtPayload {
   user_id: string // Adjust type if it's a number
@@ -32,6 +32,7 @@ const Login: React.FC = () => {
   const [showPassword, setShowPassword] = React.useState<boolean>(false)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [errorMessage, setErrorMessage] = React.useState<string>('')
+  const [isOpenModal, setIsOpenModal] = React.useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -208,11 +209,19 @@ const Login: React.FC = () => {
               {isLoading ? 'loading...' : 'login'}
             </Button>
           </Box>
-          <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
-            <Link href="/register" underline="hover">
+          <div onClick={() => setIsOpenModal(true)}>
+            <Typography
+              variant="body1"
+              sx={{
+                mt: 2,
+                textAlign: 'center',
+                cursor: 'pointer',
+                color: 'blue',
+              }}
+            >
               Lupa Password? klik di sini
-            </Link>
-          </Typography>
+            </Typography>
+          </div>
           {errorMessage && (
             <Alert severity="error" sx={{ mb: '16px' }}>
               {errorMessage}
@@ -220,6 +229,10 @@ const Login: React.FC = () => {
           )}
         </Container>
       </Grid>
+      <ModalResetPassword
+        open={isOpenModal}
+        handleClose={() => setIsOpenModal(false)}
+      />
     </Grid>
   )
 }

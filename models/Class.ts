@@ -9,6 +9,6 @@ interface ClassModelWithRelations {
   periodId: string
   created_at: string // ISO DateTime string
   updated_at: string // ISO DateTime string
-  lecturer: UserModelWithRelation // Relasi dengan dosen
-  study_program: StudyProgramModel // Relasi dengan program studi
+  lecturer_id: UserModelWithRelation // Relasi dengan dosen
+  study_program_id: StudyProgramModel // Relasi dengan program studi
 }

@@ -58,10 +58,12 @@ export default function StudyProgramTabel(props: ClassTableProps) {
   const { revalidate } = useStudyPrograms()
 
   async function handleDelete(id: string) {
+    setIsLoading(true)
     deleteStudyProgram(id as string)
       .then(() => {
         revalidate
         toaster('Hapus Data Prodi Berhasil', 'SUCCESS')
+        setIsLoading(false)
         setIsOpenModal(false)
       })
       .catch((err: any) => {

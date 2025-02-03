@@ -10,7 +10,6 @@ import {
 import React from 'react'
 import Title from '../title'
 import { MaButton } from '@components/atoms'
-import { t } from 'i18next'
 import { students } from '@utils/dummy'
 
 type ModalAddStudentsProps = {

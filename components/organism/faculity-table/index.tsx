@@ -58,10 +58,12 @@ export default function FaculityTabel(props: ClassTableProps) {
   const { revalidate } = useFaculities()
 
   async function handleDelete(id: string) {
+    setIsLoading(true)
     deleteFaculity(id as string)
       .then(() => {
         revalidate()
         toaster('Hapus Data Fakultas Berhasil', 'SUCCESS')
+        setIsLoading(false)
         setOpen(false)
       })
       .catch((err: any) => {

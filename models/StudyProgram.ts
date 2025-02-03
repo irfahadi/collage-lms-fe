@@ -7,6 +7,5 @@ interface StudyProgramModel {
   estalbished: string
   email: string
   phone: string
-  faculty_id: string
-  faculty: FacultyModel // Relasi ke tabel fakultas
+  faculty_id: FacultyModel
 }

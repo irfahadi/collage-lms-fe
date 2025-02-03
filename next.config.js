@@ -31,9 +31,9 @@ const nextConfig = {
       preventFullImport: true,
     },
   },
-  basePath: `${
-    process.env.NEXT_PUBLIC_BASEPATH ? process.env.NEXT_PUBLIC_BASEPATH : ''
-  }`,
+  // basePath: `${
+  //   process.env.NEXT_PUBLIC_BASEPATH ? process.env.NEXT_PUBLIC_BASEPATH : ''
+  // }`,
 }
 const withReactSvg = require('next-react-svg')(nextReactSvgConfig)
 const withFonts = require('next-fonts')

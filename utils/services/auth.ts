@@ -16,3 +16,17 @@ export const getUserData = (id?: string) => {
     .then((res) => Promise.resolve(res.data))
     .catch((err) => Promise.reject(err.response))
 }
+
+export const requestResetPassword = (payload: any) => {
+  return instance
+    .post('/api/v1/request_reset_password', payload)
+    .then((res) => Promise.resolve(res.data))
+    .catch((err) => Promise.reject(err.response))
+}
+
+export const resetPassword = (token: string, payload: any) => {
+  return instance
+    .post('/api/v1/reset_password/' + token, payload)
+    .then((res) => Promise.resolve(res.data))
+    .catch((err) => Promise.reject(err.response))
+}
